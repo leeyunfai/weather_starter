@@ -2,8 +2,10 @@ import type { Router } from 'express';
 import { Router as createRouter } from 'express';
 import {
   createLocation,
+  deleteLocation,
   getLocation,
   listLocations,
+  updateNickname,
   updateWeather,
 } from '../db.js';
 import { SingaporeWeatherClient, WeatherProviderError, type WeatherSnapshot } from '../weather.js';
@@ -81,6 +83,50 @@ export function createLocationsRouter(options: LocationsRouterOptions = {}): Rou
         return;
       }
       response.json(location);
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.delete('/locations/:locationId', async (request, response, next) => {
+    try {
+      const locationId = Number(request.params.locationId);
+      const deleted = await deleteLocation(locationId);
+      if (!deleted) {
+        response.status(404).json({ detail: 'Location not found' });
+        return;
+      }
+      response.status(204).end();
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.patch('/locations/:locationId', async (request, response, next) => {
+    try {
+      const id = Number(request.params.locationId);
+      const body = request.body;
+
+      if (!body || typeof body.nickname !== 'string') {
+        response.status(422).json({ error: 'A valid nickname string field is required' });
+        return;
+      }
+
+      const trimmed = body.nickname.trim();
+      const nicknameValue = trimmed.length === 0 ? null : trimmed;
+
+      if (nicknameValue !== null && nicknameValue.length > 50) {
+        response.status(422).json({ error: 'Nickname exceeds maximum length of 50 characters' });
+        return;
+      }
+
+      const result = await updateNickname(id, nicknameValue);
+      if (!result) {
+        response.status(404).json({ error: 'Location not found' });
+        return;
+      }
+
+      response.json(result);
     } catch (error) {
       next(error);
     }

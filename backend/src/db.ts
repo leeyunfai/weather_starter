@@ -10,6 +10,7 @@ export interface LocationRecord {
   id: number;
   latitude: number;
   longitude: number;
+  nickname: string | null;
   created_at: string;
   weather: WeatherSnapshot;
 }
@@ -104,6 +105,25 @@ export async function updateWeather(
   return row ? rowToRecord(row) : null;
 }
 
+export async function updateNickname(
+  id: number,
+  nickname: string | null,
+): Promise<LocationRecord | null> {
+  const row = await db
+    .update(locations)
+    .set({ nickname })
+    .where(eq(locations.id, id))
+    .returning()
+    .get();
+
+  return row ? rowToRecord(row) : null;
+}
+
+export async function deleteLocation(id: number): Promise<boolean> {
+  const row = await db.delete(locations).where(eq(locations.id, id)).returning().get();
+  return !!row;
+}
+
 export async function resetStore(): Promise<void> {
   await db.delete(locations).run();
   sqlite.prepare("DELETE FROM sqlite_sequence WHERE name = 'locations'").run();
@@ -137,6 +157,7 @@ function rowToRecord(row: LocationRow): LocationRecord {
     id: row.id,
     latitude: row.latitude,
     longitude: row.longitude,
+    nickname: row.nickname,
     created_at: row.createdAt,
     weather: {
       condition: row.condition,

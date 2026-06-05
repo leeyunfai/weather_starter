@@ -54,28 +54,28 @@ export function AddLocationForm() {
         New coordinate
       </p>
       <div className="grid grid-cols-2 gap-2">
-        <label className="grid gap-1">
+        <label className="grid gap-1 min-w-0">
           <span className="text-[11px] text-white/60">Latitude</span>
           <input
             type="number"
             step="any"
             value={latitude}
             onChange={(e) => setLatitude(e.target.value)}
-            placeholder="1.3508"
+            placeholder="1.296"
             required
-            className="rounded-md border border-white/15 bg-white/10 px-2 py-1.5 text-sm text-white placeholder:text-white/40"
+            className="w-full min-w-0 rounded-md border border-white/15 bg-white/10 px-2 py-1.5 text-sm text-white placeholder:text-white/40"
           />
         </label>
-        <label className="grid gap-1">
+        <label className="grid gap-1 min-w-0">
           <span className="text-[11px] text-white/60">Longitude</span>
           <input
             type="number"
             step="any"
             value={longitude}
             onChange={(e) => setLongitude(e.target.value)}
-            placeholder="103.8390"
+            placeholder="103.847"
             required
-            className="rounded-md border border-white/15 bg-white/10 px-2 py-1.5 text-sm text-white placeholder:text-white/40"
+            className="w-full min-w-0 rounded-md border border-white/15 bg-white/10 px-2 py-1.5 text-sm text-white placeholder:text-white/40"
           />
         </label>
       </div>

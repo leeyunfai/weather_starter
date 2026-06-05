@@ -3,7 +3,9 @@ import {
   listLocations,
   createLocation,
   refreshLocation,
+  deleteLocationApi,
   logInteraction,
+  updateNickname as updateNicknameApi,
 } from '../api';
 import type { CreateLocationPayload, Location, ProviderProps, StoreValue } from '../types';
 
@@ -93,6 +95,44 @@ export function StoreProvider({ children }: ProviderProps) {
     [load],
   );
 
+  const remove = useCallback(
+    async (id: number) => {
+      setError(null);
+      logInteraction('location_delete_clicked', { locationId: id });
+      try {
+        await deleteLocationApi(id);
+        const next = await load();
+        if (selectedId === id) {
+          setSelectedId(next.length > 0 ? next[0].id : null);
+        }
+        logInteraction('location_deleted', { locationId: id });
+      } catch (err) {
+        setError(err);
+        logInteraction('location_delete_failed', {
+          locationId: id,
+          error: err instanceof Error ? err.message : 'Unknown error',
+        });
+      }
+    },
+    [load, selectedId],
+  );
+
+  const updateNickname = useCallback(
+    async (id: number, nickname: string) => {
+      setError(null);
+      try {
+        const updated = await updateNicknameApi(id, nickname);
+        setLocations((prev) =>
+          prev.map((loc) => (loc.id === updated.id ? updated : loc)),
+        );
+      } catch (err) {
+        setError(err);
+        throw err;
+      }
+    },
+    [],
+  );
+
   const value: StoreValue = {
     locations,
     selectedId: effectiveSelectedId,
@@ -107,6 +147,8 @@ export function StoreProvider({ children }: ProviderProps) {
     },
     create,
     refresh,
+    remove,
+    updateNickname,
   };
 
   return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;

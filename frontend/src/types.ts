@@ -37,6 +37,7 @@ export interface Location {
   id: number;
   latitude: number;
   longitude: number;
+  nickname: string | null;
   created_at: string;
   weather: WeatherSnapshot;
 }
@@ -57,6 +58,8 @@ export interface StoreValue {
   setAdding: (isAdding: boolean) => void;
   create: (payload: CreateLocationPayload) => Promise<void>;
   refresh: (id: number) => Promise<void>;
+  remove: (id: number) => Promise<void>;
+  updateNickname: (id: number, nickname: string) => Promise<void>;
 }
 
 export interface ProviderProps {

@@ -1,3 +1,5 @@
+@import 'leaflet/dist/leaflet.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -40,4 +42,9 @@ input:focus-visible {
 
 ::-webkit-scrollbar-track {
   background: transparent;
+}
+
+/* Push Leaflet zoom controls below the close button in fullscreen map */
+[role="dialog"] .leaflet-top.leaflet-right {
+  top: 48px;
 }

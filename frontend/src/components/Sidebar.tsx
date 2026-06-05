@@ -12,9 +12,10 @@ export function Sidebar() {
     const q = query.trim().toLowerCase();
     if (!q) return locations;
     return locations.filter((location) => {
+      const nickname = location.nickname?.toLowerCase() ?? '';
       const area = location.weather.area?.toLowerCase() ?? '';
       const condition = location.weather.condition?.toLowerCase() ?? '';
-      return area.includes(q) || condition.includes(q);
+      return nickname.includes(q) || area.includes(q) || condition.includes(q);
     });
   }, [locations, query]);
 

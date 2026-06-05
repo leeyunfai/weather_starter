@@ -58,6 +58,7 @@ export const locations = sqliteTable(
     dailyForecast: text('daily_forecast', { mode: 'json' })
       .$type<WeatherSnapshot['daily_forecast']>()
       .notNull(),
+    nickname: text('nickname'),
   },
   (table) => [
     uniqueIndex('locations_latitude_longitude_unique').on(table.latitude, table.longitude),

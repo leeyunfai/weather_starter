@@ -182,9 +182,56 @@ export class SingaporeWeatherClient {
 
   async getCurrentWeather(latitude: number, longitude: number): Promise<WeatherSnapshot> {
     const forecastPayload = await this.fetchLatestForecastPayload().catch(() => null);
-    return forecastPayload
+    const base = forecastPayload
       ? this.snapshotFromPayload(forecastPayload, latitude, longitude)
       : this.emptyForecastSnapshot();
+
+    const [temperature, humidity, rainfall, windSpeed, windDirection, uv, airQuality, forecast24, forecast4Day] =
+      await Promise.all([
+        this.fetchNearestReading('air-temperature', latitude, longitude).catch(() => ({ value: null, timestamp: null })),
+        this.fetchNearestReading('relative-humidity', latitude, longitude).catch(() => ({ value: null, timestamp: null })),
+        this.fetchNearestReading('rainfall', latitude, longitude).catch(() => ({ value: null, timestamp: null })),
+        this.fetchNearestReading('wind-speed', latitude, longitude).catch(() => ({ value: null, timestamp: null })),
+        this.fetchNearestReading('wind-direction', latitude, longitude).catch(() => ({ value: null, timestamp: null })),
+        this.fetchUvIndex().catch(() => ({ value: null, timestamp: null })),
+        this.fetchAirQuality(latitude, longitude).catch(() => ({ psi: null, pm25: null, region: null, timestamp: null })),
+        this.fetchTwentyFourHourForecast(latitude, longitude).catch(() => ({ low: null, high: null, periods: [], timestamp: null })),
+        this.fetchFourDayForecast().catch(() => ({ days: [], timestamp: null })),
+      ]);
+
+    base.temperature_c = temperature.value;
+    base.humidity_percent = humidity.value;
+    base.rainfall_mm = rainfall.value;
+    base.wind_speed_knots = windSpeed.value;
+    base.wind_direction_degrees = windDirection.value;
+    base.uv_index = uv.value;
+    base.psi_twenty_four_hourly = airQuality.psi;
+    base.pm25_one_hourly = airQuality.pm25;
+    base.air_quality_region = airQuality.region;
+    base.forecast_low_c = forecast24.low;
+    base.forecast_high_c = forecast24.high;
+    base.forecast_periods = forecast24.periods;
+    base.daily_forecast = forecast4Day.days;
+
+    // Use the most recent timestamp across all sources
+    const timestamps = [
+      base.observed_at,
+      temperature.timestamp,
+      humidity.timestamp,
+      rainfall.timestamp,
+      windSpeed.timestamp,
+      windDirection.timestamp,
+      uv.timestamp,
+      airQuality.timestamp,
+      forecast24.timestamp,
+      forecast4Day.timestamp,
+    ].filter((t): t is string => Boolean(t));
+
+    if (timestamps.length > 0) {
+      base.observed_at = timestamps.sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
+    }
+
+    return base;
   }
 
   async fetchLatestForecastPayload(): Promise<ForecastPayload> {

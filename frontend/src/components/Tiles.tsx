@@ -1,4 +1,5 @@
 import { CloudIcon, DropletIcon, SunIcon, ThermometerIcon, TrendIcon, WindIcon } from './icons';
+import { MapCard } from './MapCard';
 import type { ReactNode } from 'react';
 import type { WeatherSnapshot } from '../types';
 
@@ -254,6 +255,7 @@ export function TileGrid({ weather }: WeatherProps) {
       <PrecipitationTile weather={weather} />
       <HumidityTile weather={weather} />
       <AveragesTile weather={weather} />
+      <MapCard />
     </div>
   );
 }
