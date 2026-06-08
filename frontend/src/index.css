@@ -1,5 +1,128 @@
 @import 'leaflet/dist/leaflet.css';
 
+:root[data-theme="apple"] {
+  --body-bg: radial-gradient(120% 80% at 70% 0%, rgba(255,255,255,0.18) 0%, transparent 55%),
+             radial-gradient(90% 70% at 10% 100%, rgba(80,110,150,0.55) 0%, transparent 60%),
+             linear-gradient(170deg, #6f8aa8 0%, #5a7591 35%, #4a627c 65%, #3c5066 100%);
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.15);
+  --sidebar-bg: rgba(0, 0, 0, 0.2);
+  --sidebar-card-bg: rgba(255, 255, 255, 0.07);
+  --sidebar-card-border: rgba(255, 255, 255, 0.1);
+  --sidebar-card-selected-bg: rgba(255, 255, 255, 0.2);
+  --sidebar-card-selected-border: rgba(255, 255, 255, 0.3);
+  --text-primary: rgba(255, 255, 255, 0.9);
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.55);
+  --accent-color: #0ea5e9;
+}
+
+:root[data-theme="midnight"] {
+  --body-bg: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(6,182,212,0.08) 0%, transparent 60%),
+             #0a0a0f;
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(34, 211, 238, 0.2);
+  --sidebar-bg: #0d0d12;
+  --sidebar-card-bg: rgba(255, 255, 255, 0.04);
+  --sidebar-card-border: rgba(34, 211, 238, 0.15);
+  --sidebar-card-selected-bg: rgba(34, 211, 238, 0.1);
+  --sidebar-card-selected-border: rgba(34, 211, 238, 0.35);
+  --text-primary: #ecfeff;
+  --text-secondary: rgba(207, 250, 254, 0.8);
+  --text-muted: rgba(165, 243, 252, 0.6);
+  --accent-color: #22d3ee;
+}
+
+:root[data-theme="sunrise"] {
+  --body-bg: linear-gradient(160deg, #ffdab3 0%, #ffb87a 30%, #ff8a65 60%, #e67350 100%);
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --card-border: rgba(194, 112, 60, 0.2);
+  --sidebar-bg: rgba(255, 245, 235, 0.95);
+  --sidebar-card-bg: rgba(255, 255, 255, 0.7);
+  --sidebar-card-border: rgba(194, 112, 60, 0.15);
+  --sidebar-card-selected-bg: rgba(255, 138, 101, 0.15);
+  --sidebar-card-selected-border: rgba(255, 138, 101, 0.4);
+  --text-primary: rgba(60, 30, 10, 0.9);
+  --text-secondary: rgba(80, 45, 20, 0.7);
+  --text-muted: rgba(120, 70, 40, 0.6);
+  --accent-color: #e65100;
+}
+
+:root[data-theme="arctic"] {
+  --body-bg: linear-gradient(180deg, #f0f7ff 0%, #e8f1fa 50%, #fafcff 100%);
+  --card-bg: #ffffff;
+  --card-border: rgba(180, 210, 240, 0.5);
+  --sidebar-bg: #f5f9ff;
+  --sidebar-card-bg: #ffffff;
+  --sidebar-card-border: rgba(180, 210, 240, 0.4);
+  --sidebar-card-selected-bg: rgba(59, 130, 246, 0.08);
+  --sidebar-card-selected-border: rgba(59, 130, 246, 0.4);
+  --text-primary: rgba(15, 23, 42, 0.9);
+  --text-secondary: rgba(30, 41, 59, 0.7);
+  --text-muted: rgba(71, 85, 105, 0.65);
+  --accent-color: #2563eb;
+}
+
+:root[data-theme="forest"] {
+  --body-bg: linear-gradient(170deg, #1a2e1a 0%, #1f3a1f 40%, #162b16 70%, #0f200f 100%);
+  --card-bg: rgba(52, 211, 153, 0.06);
+  --card-border: rgba(52, 211, 153, 0.2);
+  --sidebar-bg: rgba(10, 30, 10, 0.6);
+  --sidebar-card-bg: rgba(52, 211, 153, 0.05);
+  --sidebar-card-border: rgba(52, 211, 153, 0.15);
+  --sidebar-card-selected-bg: rgba(52, 211, 153, 0.12);
+  --sidebar-card-selected-border: rgba(52, 211, 153, 0.4);
+  --text-primary: rgba(236, 253, 245, 0.9);
+  --text-secondary: rgba(209, 250, 229, 0.7);
+  --text-muted: rgba(167, 243, 208, 0.55);
+  --accent-color: #34d399;
+}
+
+:root[data-theme="terminal"] {
+  --body-bg: #000000;
+  --card-bg: rgba(0, 0, 0, 0.9);
+  --card-border: rgba(51, 255, 51, 0.3);
+  --sidebar-bg: #050505;
+  --sidebar-card-bg: rgba(0, 0, 0, 0.8);
+  --sidebar-card-border: rgba(51, 255, 51, 0.2);
+  --sidebar-card-selected-bg: rgba(51, 255, 51, 0.08);
+  --sidebar-card-selected-border: rgba(51, 255, 51, 0.6);
+  --text-primary: #33ff33;
+  --text-secondary: rgba(51, 255, 51, 0.7);
+  --text-muted: rgba(51, 255, 51, 0.45);
+  --accent-color: #33ff33;
+}
+
+:root[data-theme="pastel"] {
+  --body-bg: linear-gradient(135deg, #f0e6ff 0%, #e8f4fd 40%, #fce4ec 70%, #f3e5f5 100%);
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --card-border: rgba(186, 147, 210, 0.25);
+  --sidebar-bg: rgba(240, 230, 255, 0.9);
+  --sidebar-card-bg: rgba(255, 255, 255, 0.6);
+  --sidebar-card-border: rgba(186, 147, 210, 0.2);
+  --sidebar-card-selected-bg: rgba(186, 147, 210, 0.15);
+  --sidebar-card-selected-border: rgba(186, 147, 210, 0.5);
+  --text-primary: rgba(45, 25, 70, 0.9);
+  --text-secondary: rgba(70, 45, 100, 0.7);
+  --text-muted: rgba(100, 70, 130, 0.6);
+  --accent-color: #9c27b0;
+}
+
+:root[data-theme="ocean"] {
+  --body-bg: linear-gradient(160deg, #0f172a 0%, #0c2d48 35%, #0d4f6b 65%, #0d9488 100%);
+  --card-bg: rgba(13, 148, 136, 0.12);
+  --card-border: rgba(13, 148, 136, 0.25);
+  --sidebar-bg: rgba(15, 23, 42, 0.85);
+  --sidebar-card-bg: rgba(13, 148, 136, 0.08);
+  --sidebar-card-border: rgba(13, 148, 136, 0.2);
+  --sidebar-card-selected-bg: rgba(13, 148, 136, 0.18);
+  --sidebar-card-selected-border: rgba(13, 148, 136, 0.5);
+  --text-primary: rgba(240, 253, 250, 0.92);
+  --text-secondary: rgba(204, 251, 241, 0.72);
+  --text-muted: rgba(153, 246, 228, 0.55);
+  --accent-color: #14b8a6;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,10 +135,7 @@ body,
 
 body {
   @apply text-white antialiased;
-  background:
-    radial-gradient(120% 80% at 70% 0%, rgba(255, 255, 255, 0.18) 0%, transparent 55%),
-    radial-gradient(90% 70% at 10% 100%, rgba(80, 110, 150, 0.55) 0%, transparent 60%),
-    linear-gradient(170deg, #6f8aa8 0%, #5a7591 35%, #4a627c 65%, #3c5066 100%);
+  background: var(--body-bg);
   background-attachment: fixed;
   background-repeat: no-repeat;
 }

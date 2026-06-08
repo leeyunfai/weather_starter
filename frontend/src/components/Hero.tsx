@@ -14,8 +14,8 @@ export function Hero() {
       <main className="flex flex-1 flex-col p-10">
         <div className="flex flex-1 items-center justify-center">
           <div className="text-center">
-            <p className="text-2xl font-light text-white/85">Select a location</p>
-            <p className="mt-2 text-sm text-white/60">
+            <p className="text-2xl font-light text-[var(--text-primary)]">Select a location</p>
+            <p className="mt-2 text-sm text-[var(--text-muted)]">
               Add a Singapore coordinate from the sidebar to see its weather.
             </p>
           </div>
@@ -41,7 +41,7 @@ export function Hero() {
       <div className="mx-auto flex max-w-5xl flex-col gap-3 p-6 lg:p-8">
         <header className="flex flex-col items-center pt-6 pb-2 text-center">
           {isHome && (
-            <div className="mb-2 flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
+            <div className="mb-2 flex items-center gap-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--text-secondary)]">
               <LocationIcon className="h-3 w-3" />
               <span>Home</span>
             </div>
@@ -50,22 +50,22 @@ export function Hero() {
           <div className="mt-2 text-[6.5rem] font-extralight leading-none tracking-tight text-white">
             {temperature}
           </div>
-          <div className="mt-1 text-lg text-white/90">{condition}</div>
-          <div className="mt-1 text-sm text-white/70 tabular-nums">
+          <div className="mt-1 text-lg text-[var(--text-primary)]">{condition}</div>
+          <div className="mt-1 text-sm text-[var(--text-secondary)] tabular-nums">
             H:{high} L:{low}
           </div>
-          {observed && <div className="mt-3 text-xs text-white/55">Updated {observed}</div>}
+          {observed && <div className="mt-3 text-xs text-[var(--text-muted)]">Updated {observed}</div>}
         </header>
 
         {validPeriod && (
-          <p className="px-2 pb-1 text-center text-xs text-white/65">{validPeriod}</p>
+          <p className="px-2 pb-1 text-center text-xs text-[var(--text-muted)]">{validPeriod}</p>
         )}
 
         <HourlyStrip periods={selected.weather?.forecast_periods} />
         <TenDayForecast weather={selected.weather} />
         <TileGrid weather={selected.weather} />
 
-        <footer className="mt-2 flex flex-col items-center gap-3 pb-8 text-xs text-white/55">
+        <footer className="mt-2 flex flex-col items-center gap-3 pb-8 text-xs text-[var(--text-muted)]">
           <button
             type="button"
             onClick={() => void refresh(selected.id)}

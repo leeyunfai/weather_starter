@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather</title>
+    <script>
+      (function() {
+        var VALID = ['apple', 'midnight', 'sunrise', 'arctic', 'forest', 'terminal', 'pastel', 'ocean'];
+        var stored = null;
+        try { stored = localStorage.getItem('weather-theme'); } catch(e) {}
+        var theme = VALID.indexOf(stored) !== -1 ? stored : 'apple';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
     <script type="module">
       if (import.meta.env.DEV) {
         import('react-grab');

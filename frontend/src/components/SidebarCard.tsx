@@ -48,8 +48,8 @@ export function SidebarCard({ location, isHome }: SidebarCardProps) {
       aria-pressed={isSelected}
       className={`group relative w-full cursor-pointer overflow-hidden rounded-2xl border text-left backdrop-blur-xl transition ${
         isSelected
-          ? 'border-white/30 bg-white/20 shadow-lg shadow-black/20'
-          : 'border-white/10 bg-white/[0.07] hover:bg-white/[0.12]'
+          ? 'border-[var(--sidebar-card-selected-border)] bg-[var(--sidebar-card-selected-bg)] shadow-lg shadow-black/20'
+          : 'border-[var(--sidebar-card-border)] bg-[var(--sidebar-card-bg)] hover:bg-[var(--sidebar-card-selected-bg)]'
       }`}
     >
       <button

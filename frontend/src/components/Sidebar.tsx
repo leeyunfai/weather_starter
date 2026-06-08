@@ -20,7 +20,7 @@ export function Sidebar() {
   }, [locations, query]);
 
   return (
-    <aside className="flex w-[22rem] shrink-0 flex-col gap-3 border-r border-white/5 bg-black/20 p-4 backdrop-blur-2xl">
+    <aside className="flex w-[22rem] shrink-0 flex-col gap-3 border-r border-white/5 bg-[var(--sidebar-bg)] p-4 backdrop-blur-2xl">
       <div className="relative">
         <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-white/50" />
         <input
@@ -36,15 +36,15 @@ export function Sidebar() {
 
       <div className="flex flex-col gap-2 overflow-y-auto pr-1">
         {isLoading && locations.length === 0 ? (
-          <p className="rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-sm text-white/70">
+          <p className="rounded-2xl border border-[var(--sidebar-card-border)] bg-[var(--sidebar-card-bg)] p-4 text-sm text-white/70">
             Loading locations…
           </p>
         ) : filtered.length === 0 && locations.length > 0 ? (
-          <p className="rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-center text-sm text-white/60">
+          <p className="rounded-2xl border border-[var(--sidebar-card-border)] bg-[var(--sidebar-card-bg)] p-4 text-center text-sm text-white/60">
             No matches
           </p>
         ) : filtered.length === 0 ? (
-          <p className="rounded-2xl border border-dashed border-white/15 bg-white/[0.04] p-6 text-center text-sm text-white/60">
+          <p className="rounded-2xl border border-dashed border-[var(--card-border)] bg-[var(--sidebar-card-bg)] p-6 text-center text-sm text-white/60">
             No locations yet. Add one above.
           </p>
         ) : (

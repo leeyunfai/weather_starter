@@ -226,7 +226,7 @@ export function MapCard() {
 
   return (
     <section
-      className="col-span-full flex flex-col gap-3 rounded-2xl border border-white/15 bg-white/[0.08] p-4 backdrop-blur-xl"
+      className="col-span-full flex flex-col gap-3 rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)] p-4 backdrop-blur-xl"
       role="region"
       aria-label="Interactive locations map"
     >
