@@ -6,6 +6,7 @@ import {
   deleteLocationApi,
   logInteraction,
   updateNickname as updateNicknameApi,
+  RequestError,
 } from '../api';
 import type { CreateLocationPayload, Location, ProviderProps, StoreValue } from '../types';
 
@@ -60,7 +61,19 @@ export function StoreProvider({ children }: ProviderProps) {
           latitude: created.latitude,
           longitude: created.longitude,
         });
+        return { status: 'created' as const, locationId: targetId ?? null };
       } catch (err) {
+        if (err instanceof RequestError && err.status === 409 && err.existingLocationId) {
+          await load();
+          setSelectedId(err.existingLocationId);
+          setIsAdding(false);
+          logInteraction('location_duplicate_selected', {
+            locationId: err.existingLocationId,
+            latitude: payload.latitude,
+            longitude: payload.longitude,
+          });
+          return { status: 'existing' as const, locationId: err.existingLocationId };
+        }
         setError(err);
         logInteraction('location_create_failed', {
           latitude: payload.latitude,

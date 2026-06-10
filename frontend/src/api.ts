@@ -9,6 +9,19 @@ interface LocationsResponse {
 
 interface ApiError {
   detail?: string;
+  existingLocationId?: number;
+}
+
+export class RequestError extends Error {
+  status: number;
+  existingLocationId?: number;
+
+  constructor(status: number, error: ApiError) {
+    super(error.detail || 'Request failed');
+    this.name = 'RequestError';
+    this.status = status;
+    this.existingLocationId = error.existingLocationId;
+  }
 }
 
 async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
@@ -18,7 +31,7 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
   });
   if (!response.ok) {
     const error = (await response.json().catch(() => ({}))) as ApiError;
-    throw new Error(error.detail || 'Request failed');
+    throw new RequestError(response.status, error);
   }
   if (response.status === 204) return null as T;
   return (await response.json()) as T;

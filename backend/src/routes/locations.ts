@@ -3,6 +3,7 @@ import { Router as createRouter } from 'express';
 import {
   createLocation,
   deleteLocation,
+  DuplicateLocationError,
   getLocation,
   listLocations,
   updateNickname,
@@ -66,9 +67,11 @@ export function createLocationsRouter(options: LocationsRouterOptions = {}): Rou
         response.status(201).json(location);
       }
     } catch (error) {
-      if (error instanceof Error && error.name === 'DuplicateLocationError') {
+      if (error instanceof DuplicateLocationError) {
         logger.warn({ err: error }, 'duplicate location rejected');
-        response.status(409).json({ detail: error.message });
+        response
+          .status(409)
+          .json({ detail: error.message, existingLocationId: error.existingLocationId });
         return;
       }
       next(error);

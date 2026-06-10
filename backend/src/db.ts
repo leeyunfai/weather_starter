@@ -1,7 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-import { and, desc, eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/sqlite-proxy';
 import { migrate } from 'drizzle-orm/sqlite-proxy/migrator';
 import { locations, type WeatherSnapshot } from './schema.js';
@@ -15,7 +15,18 @@ export interface LocationRecord {
   weather: WeatherSnapshot;
 }
 
+export class DuplicateLocationError extends Error {
+  existingLocationId: number;
+
+  constructor(existingLocationId: number) {
+    super('Nearby location already exists');
+    this.name = 'DuplicateLocationError';
+    this.existingLocationId = existingLocationId;
+  }
+}
+
 type LocationRow = typeof locations.$inferSelect;
+const DUPLICATE_DISTANCE_METERS = 100;
 
 const defaultWeather: WeatherSnapshot = {
   condition: 'Not refreshed',
@@ -62,16 +73,18 @@ export async function listLocations(): Promise<LocationRecord[]> {
 }
 
 export async function createLocation(latitude: number, longitude: number): Promise<LocationRecord> {
-  const duplicate = await db
-    .select({ id: locations.id })
+  const savedLocations = await db
+    .select({ id: locations.id, latitude: locations.latitude, longitude: locations.longitude })
     .from(locations)
-    .where(and(eq(locations.latitude, latitude), eq(locations.longitude, longitude)))
-    .get();
+    .all();
+  const duplicate = savedLocations.find(
+    (location) =>
+      distanceMeters(latitude, longitude, location.latitude, location.longitude) <=
+      DUPLICATE_DISTANCE_METERS,
+  );
 
   if (duplicate) {
-    const error = new Error('Location already exists');
-    error.name = 'DuplicateLocationError';
-    throw error;
+    throw new DuplicateLocationError(duplicate.id);
   }
 
   const createdAt = new Date().toISOString().slice(0, 19);
@@ -88,6 +101,25 @@ export async function createLocation(latitude: number, longitude: number): Promi
     .get();
 
   return rowToRecord(row);
+}
+
+function distanceMeters(
+  latitudeA: number,
+  longitudeA: number,
+  latitudeB: number,
+  longitudeB: number,
+): number {
+  const earthRadiusMeters = 6_371_000;
+  const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+  const latitudeDelta = toRadians(latitudeB - latitudeA);
+  const longitudeDelta = toRadians(longitudeB - longitudeA);
+  const a =
+    Math.sin(latitudeDelta / 2) ** 2 +
+    Math.cos(toRadians(latitudeA)) *
+      Math.cos(toRadians(latitudeB)) *
+      Math.sin(longitudeDelta / 2) ** 2;
+
+  return earthRadiusMeters * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 export async function getLocation(id: number): Promise<LocationRecord | null> {

@@ -47,6 +47,10 @@ export interface CreateLocationPayload {
   longitude: number;
 }
 
+export type CreateLocationResult =
+  | { status: 'created'; locationId: number | null }
+  | { status: 'existing'; locationId: number };
+
 export interface StoreValue {
   locations: Location[];
   selectedId: number | null;
@@ -56,7 +60,7 @@ export interface StoreValue {
   error: unknown;
   select: (id: number | null) => void;
   setAdding: (isAdding: boolean) => void;
-  create: (payload: CreateLocationPayload) => Promise<void>;
+  create: (payload: CreateLocationPayload) => Promise<CreateLocationResult>;
   refresh: (id: number) => Promise<void>;
   remove: (id: number) => Promise<void>;
   updateNickname: (id: number, nickname: string) => Promise<void>;
