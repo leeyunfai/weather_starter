@@ -3,6 +3,9 @@
     "sqlite": {
       "command": "uvx",
       "args": ["mcp-server-sqlite", "--db-path", "backend/weather.db"]
+    },
+    "deepwiki": {
+      "url": "https://mcp.deepwiki.com/mcp"
     }
   }
 }
