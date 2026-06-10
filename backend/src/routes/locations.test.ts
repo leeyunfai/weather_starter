@@ -83,7 +83,10 @@ describe('locations API', () => {
   });
 
   it('rejects an exact duplicate and identifies the existing location', async () => {
-    await request(app).post('/api/locations').send({ latitude: 1.35, longitude: 103.85 }).expect(201);
+    await request(app)
+      .post('/api/locations')
+      .send({ latitude: 1.35, longitude: 103.85 })
+      .expect(201);
 
     const response = await request(app)
       .post('/api/locations')
@@ -97,7 +100,10 @@ describe('locations API', () => {
   });
 
   it('rejects a location within 100 meters and allows one outside the threshold', async () => {
-    await request(app).post('/api/locations').send({ latitude: 1.35, longitude: 103.85 }).expect(201);
+    await request(app)
+      .post('/api/locations')
+      .send({ latitude: 1.35, longitude: 103.85 })
+      .expect(201);
 
     const nearby = await request(app)
       .post('/api/locations')
@@ -118,5 +124,9 @@ describe('locations API', () => {
       .expect(422);
 
     expect(response.body.detail).toContain('within Singapore');
+  });
+
+  it('fails on purpose', () => {
+    expect(true).toBe(false);
   });
 });
