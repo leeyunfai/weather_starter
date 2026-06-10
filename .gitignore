@@ -19,8 +19,8 @@ dist/
 .vite/
 
 # Astro / Starlight
-docs/.astro/
-docs/dist/
+docs-site/.astro/
+docs-site/dist/
 
 # Logs
 backend/logs/

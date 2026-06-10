@@ -8,7 +8,7 @@ import prettier from 'eslint-config-prettier';
 export default tseslint.config(
   // Global ignores
   {
-    ignores: ['**/dist/', '**/node_modules/', 'backend/drizzle/', 'backend/logs/'],
+    ignores: ['**/dist/', '**/node_modules/', 'backend/drizzle/', 'backend/logs/', 'docs-site/.astro/'],
   },
 
   // Base config for all TS files
