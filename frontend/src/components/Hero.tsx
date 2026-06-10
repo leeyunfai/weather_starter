@@ -46,8 +46,8 @@ export function Hero() {
               <span>Home</span>
             </div>
           )}
-          <h1 className="text-4xl font-light leading-tight text-white">{area}</h1>
-          <div className="mt-2 text-[6.5rem] font-extralight leading-none tracking-tight text-white">
+          <h1 className="text-4xl font-light leading-tight text-[var(--text-primary)]">{area}</h1>
+          <div className="mt-2 text-[6.5rem] font-extralight leading-none tracking-tight text-[var(--text-primary)]">
             {temperature}
           </div>
           <div className="mt-1 text-lg text-[var(--text-primary)]">{condition}</div>
@@ -72,7 +72,7 @@ export function Hero() {
             type="button"
             onClick={() => void refresh(selected.id)}
             disabled={isRefreshing}
-            className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.08] px-3 py-1.5 text-xs font-medium text-white/85 backdrop-blur-xl hover:bg-white/[0.14] disabled:cursor-not-allowed disabled:opacity-60"
+            className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.08] px-3 py-1.5 text-xs font-medium text-[var(--text-primary)] backdrop-blur-xl hover:bg-white/[0.14] disabled:cursor-not-allowed disabled:opacity-60"
           >
             <RefreshIcon className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
             <span>{isRefreshing ? 'Refreshing…' : 'Refresh'}</span>

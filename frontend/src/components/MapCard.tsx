@@ -228,12 +228,12 @@ export function MapCard() {
       role="region"
       aria-label="Interactive locations map"
     >
-      <header className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/60">
+      <header className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-secondary)]">
         <MapPinIcon className="h-3.5 w-3.5" />
         <span>Locations Map</span>
         <button
           ref={expandButtonRef}
-          className="ml-auto flex h-6 w-6 items-center justify-center rounded-md text-white/60 transition-colors hover:bg-white/10 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/30"
+          className="ml-auto flex h-6 w-6 items-center justify-center rounded-md text-[var(--text-secondary)] transition-colors hover:bg-white/10 hover:text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-white/30"
           aria-label="Expand map to fullscreen"
           onClick={openFullscreen}
         >
@@ -243,7 +243,7 @@ export function MapCard() {
 
       <div className={`flex-1${isFullscreen ? ' invisible' : ''}`}>
         {isLoading && locations.length === 0 ? (
-          <div className="flex h-[280px] items-center justify-center rounded-xl bg-white/[0.04] text-sm text-white/60">
+          <div className="flex h-[280px] items-center justify-center rounded-xl bg-white/[0.04] text-sm text-[var(--text-secondary)]">
             Loading locations…
           </div>
         ) : (
@@ -272,7 +272,7 @@ export function MapCard() {
             </MapContainer>
             {!isLoading && locations.length === 0 && (
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl bg-black/30">
-                <p className="text-sm text-white/80">No locations yet. Add one from the sidebar.</p>
+                <p className="text-sm text-[var(--text-primary)]">No locations yet. Add one from the sidebar.</p>
               </div>
             )}
           </div>

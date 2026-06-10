@@ -16,6 +16,10 @@
   --text-secondary: rgba(255, 255, 255, 0.7);
   --text-muted: rgba(255, 255, 255, 0.55);
   --accent-color: #0ea5e9;
+  --delete-button-bg: rgba(255, 255, 255, 0.1);
+  --delete-button-text: rgba(255, 255, 255, 0.6);
+  --delete-button-hover-bg: rgba(248, 113, 113, 0.2);
+  --delete-button-hover-text: #fecaca;
 }
 
 :root[data-theme='midnight'] {
@@ -32,6 +36,10 @@
   --text-secondary: rgba(207, 250, 254, 0.8);
   --text-muted: rgba(165, 243, 252, 0.6);
   --accent-color: #22d3ee;
+  --delete-button-bg: rgba(34, 211, 238, 0.1);
+  --delete-button-text: rgba(207, 250, 254, 0.65);
+  --delete-button-hover-bg: rgba(239, 68, 68, 0.18);
+  --delete-button-hover-text: #fecaca;
 }
 
 :root[data-theme='sunrise'] {
@@ -47,6 +55,10 @@
   --text-secondary: rgba(80, 45, 20, 0.7);
   --text-muted: rgba(120, 70, 40, 0.6);
   --accent-color: #e65100;
+  --delete-button-bg: rgba(230, 81, 0, 0.08);
+  --delete-button-text: rgba(80, 45, 20, 0.55);
+  --delete-button-hover-bg: rgba(220, 38, 38, 0.12);
+  --delete-button-hover-text: #b91c1c;
 }
 
 :root[data-theme='arctic'] {
@@ -62,6 +74,10 @@
   --text-secondary: rgba(30, 41, 59, 0.7);
   --text-muted: rgba(71, 85, 105, 0.65);
   --accent-color: #2563eb;
+  --delete-button-bg: rgba(59, 130, 246, 0.08);
+  --delete-button-text: rgba(30, 41, 59, 0.55);
+  --delete-button-hover-bg: rgba(220, 38, 38, 0.1);
+  --delete-button-hover-text: #b91c1c;
 }
 
 :root[data-theme='forest'] {
@@ -77,6 +93,10 @@
   --text-secondary: rgba(209, 250, 229, 0.7);
   --text-muted: rgba(167, 243, 208, 0.55);
   --accent-color: #34d399;
+  --delete-button-bg: rgba(52, 211, 153, 0.1);
+  --delete-button-text: rgba(209, 250, 229, 0.65);
+  --delete-button-hover-bg: rgba(239, 68, 68, 0.18);
+  --delete-button-hover-text: #fecaca;
 }
 
 :root[data-theme='terminal'] {
@@ -92,6 +112,10 @@
   --text-secondary: rgba(51, 255, 51, 0.7);
   --text-muted: rgba(51, 255, 51, 0.45);
   --accent-color: #33ff33;
+  --delete-button-bg: rgba(51, 255, 51, 0.08);
+  --delete-button-text: rgba(51, 255, 51, 0.55);
+  --delete-button-hover-bg: rgba(51, 255, 51, 0.16);
+  --delete-button-hover-text: #33ff33;
 }
 
 :root[data-theme='pastel'] {
@@ -107,6 +131,10 @@
   --text-secondary: rgba(70, 45, 100, 0.7);
   --text-muted: rgba(100, 70, 130, 0.6);
   --accent-color: #9c27b0;
+  --delete-button-bg: rgba(156, 39, 176, 0.08);
+  --delete-button-text: rgba(70, 45, 100, 0.55);
+  --delete-button-hover-bg: rgba(220, 38, 38, 0.1);
+  --delete-button-hover-text: #b91c1c;
 }
 
 :root[data-theme='ocean'] {
@@ -122,6 +150,10 @@
   --text-secondary: rgba(204, 251, 241, 0.72);
   --text-muted: rgba(153, 246, 228, 0.55);
   --accent-color: #14b8a6;
+  --delete-button-bg: rgba(13, 148, 136, 0.1);
+  --delete-button-text: rgba(204, 251, 241, 0.62);
+  --delete-button-hover-bg: rgba(239, 68, 68, 0.18);
+  --delete-button-hover-text: #fecaca;
 }
 
 @tailwind base;

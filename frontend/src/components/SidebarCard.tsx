@@ -56,7 +56,7 @@ export function SidebarCard({ location, isHome }: SidebarCardProps) {
         type="button"
         onClick={onDelete}
         aria-label={`Delete ${displayName}`}
-        className="absolute right-2 top-2 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-white/60 opacity-0 transition hover:bg-white/25 hover:text-white group-hover:opacity-100"
+        className="absolute right-2 top-2 z-10 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--delete-button-bg)] text-[var(--delete-button-text)] opacity-0 transition hover:bg-[var(--delete-button-hover-bg)] hover:text-[var(--delete-button-hover-text)] group-hover:opacity-100"
       >
         &#x2715;
       </button>
@@ -65,7 +65,7 @@ export function SidebarCard({ location, isHome }: SidebarCardProps) {
           {isEditing ? (
             <input
               type="text"
-              className={`w-full rounded bg-white/10 px-1 text-lg font-semibold leading-tight text-white outline-none ring-1 ${
+              className={`w-full rounded bg-white/10 px-1 text-lg font-semibold leading-tight text-[var(--text-primary)] outline-none ring-1 ${
                 saveError ? 'ring-red-400' : 'ring-white/30 focus:ring-white/60'
               } ${isSaving ? 'opacity-50' : ''}`}
               value={editValue}
@@ -109,7 +109,7 @@ export function SidebarCard({ location, isHome }: SidebarCardProps) {
             />
           ) : (
             <div
-              className="truncate text-lg font-semibold leading-tight text-white cursor-text"
+              className="truncate text-lg font-semibold leading-tight text-[var(--text-primary)] cursor-text"
               onDoubleClick={(e) => {
                 e.stopPropagation();
                 setEditValue(location.nickname ?? '');
@@ -120,29 +120,29 @@ export function SidebarCard({ location, isHome }: SidebarCardProps) {
               {displayName}
             </div>
           )}
-          <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-white/70">
+          <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-[var(--text-secondary)]">
             {isHome ? (
               <>
                 <span>My Location</span>
-                <span className="text-white/40">·</span>
+                <span className="text-[var(--text-muted)]">·</span>
                 <HomeIcon className="h-3 w-3" />
                 <span>Home</span>
               </>
             ) : observed ? (
               <span>{observed}</span>
             ) : (
-              <span className="text-white/50">Not refreshed</span>
+              <span className="text-[var(--text-muted)]">Not refreshed</span>
             )}
           </div>
         </div>
-        <div className="text-3xl font-light tabular-nums text-white/90">{temperature}</div>
+        <div className="text-3xl font-light tabular-nums text-[var(--text-primary)]">{temperature}</div>
       </div>
       <div className="mt-3 flex items-center justify-between border-t border-white/10 px-4 py-2 text-xs">
-        <div className="flex items-center gap-2 text-white/80">
-          <CloudIcon className="h-4 w-4 text-white/70" />
+        <div className="flex items-center gap-2 text-[var(--text-secondary)]">
+          <CloudIcon className="h-4 w-4 text-[var(--text-secondary)]" />
           <span>{condition}</span>
         </div>
-        <div className="text-white/60 tabular-nums">
+        <div className="text-[var(--text-secondary)] tabular-nums">
           H:{high} L:{low}
         </div>
       </div>
