@@ -7,7 +7,14 @@ import type { Location, WeatherSnapshot } from '../types';
 // Mock store values
 const mockSelect = vi.fn();
 const defaultStoreValues = {
-  locations: [] as { id: number; latitude: number; longitude: number; nickname: string | null; created_at: string; weather: WeatherSnapshot }[],
+  locations: [] as {
+    id: number;
+    latitude: number;
+    longitude: number;
+    nickname: string | null;
+    created_at: string;
+    weather: WeatherSnapshot;
+  }[],
   selectedId: null as number | null,
   isAdding: false,
   isLoading: false,
@@ -32,7 +39,19 @@ vi.mock('react-leaflet', () => ({
     </div>
   ),
   TileLayer: () => <div data-testid="tile-layer" />,
-  Marker: ({ children, eventHandlers, position, icon, alt }: { children?: React.ReactNode; eventHandlers?: { click?: () => void }; position?: [number, number]; icon?: { options?: { iconSize?: number[] } }; alt?: string }) => (
+  Marker: ({
+    children,
+    eventHandlers,
+    position,
+    icon,
+    alt,
+  }: {
+    children?: React.ReactNode;
+    eventHandlers?: { click?: () => void };
+    position?: [number, number];
+    icon?: { options?: { iconSize?: number[] } };
+    alt?: string;
+  }) => (
     <div
       data-testid="marker"
       data-position={JSON.stringify(position)}
@@ -43,7 +62,9 @@ vi.mock('react-leaflet', () => ({
       {children}
     </div>
   ),
-  Popup: ({ children }: { children?: React.ReactNode }) => <div data-testid="popup">{children}</div>,
+  Popup: ({ children }: { children?: React.ReactNode }) => (
+    <div data-testid="popup">{children}</div>
+  ),
   ZoomControl: () => <div data-testid="zoom-control" />,
   useMap: () => ({
     invalidateSize: vi.fn(),

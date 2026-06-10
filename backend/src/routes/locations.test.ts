@@ -126,7 +126,4 @@ describe('locations API', () => {
     expect(response.body.detail).toContain('within Singapore');
   });
 
-  it('fails on purpose', () => {
-    expect(true).toBe(false);
-  });
 });
