@@ -23,13 +23,13 @@ frontend/src/
 
 ## Tech Stack
 
-| Layer | Choice |
-|-------|--------|
-| Backend | Express 4, Node.js native `node:sqlite`, Drizzle ORM (sqlite-proxy) |
-| Frontend | React 18, Vite 7, Tailwind CSS 3, Leaflet + react-leaflet |
-| Language | TypeScript 5.7 (strict) |
-| Tests | Vitest 4.1, supertest, @testing-library/react, fast-check |
-| Lint | ESLint 9 + Prettier 3.8 |
+| Layer    | Choice                                                              |
+| -------- | ------------------------------------------------------------------- |
+| Backend  | Express 4, Node.js native `node:sqlite`, Drizzle ORM (sqlite-proxy) |
+| Frontend | React 18, Vite 7, Tailwind CSS 3, Leaflet + react-leaflet           |
+| Language | TypeScript 5.7 (strict)                                             |
+| Tests    | Vitest 4.1, supertest, @testing-library/react, fast-check           |
+| Lint     | ESLint 9 + Prettier 3.8                                             |
 
 ## State Management
 

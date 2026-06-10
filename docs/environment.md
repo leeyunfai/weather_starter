@@ -2,12 +2,12 @@
 
 ## Environment Variables
 
-| Variable | Purpose | Default |
-|----------|---------|---------|
-| `WEATHER_API_KEY` | data.gov.sg API key (optional, for higher rate limits) | (none) |
-| `PORTLESS_PORT` | Local dev server port | `1355` |
-| `PORTLESS_HTTPS` | Enable HTTPS in dev | `0` |
-| `DATABASE_PATH` | SQLite file path | `backend/weather.db` |
+| Variable          | Purpose                                                | Default              |
+| ----------------- | ------------------------------------------------------ | -------------------- |
+| `WEATHER_API_KEY` | data.gov.sg API key (optional, for higher rate limits) | (none)               |
+| `PORTLESS_PORT`   | Local dev server port                                  | `1355`               |
+| `PORTLESS_HTTPS`  | Enable HTTPS in dev                                    | `0`                  |
+| `DATABASE_PATH`   | SQLite file path                                       | `backend/weather.db` |
 
 Copy `.env.example` to `.env` to configure.
 
@@ -18,6 +18,7 @@ npm run dev
 ```
 
 This runs `scripts/dev.mjs` which:
+
 1. Launches backend via `tsx watch backend/src/server.ts` (auto-restarts on file changes)
 2. Uses **portless** for a stable local URL (default: `http://127.0.0.1:1355`)
 3. In dev mode, Express embeds Vite middleware — frontend gets full HMR
@@ -33,10 +34,10 @@ npm run start   # runs scripts/start.mjs → node with compiled backend serving 
 
 ## Utility Scripts
 
-| Script | Purpose |
-|--------|---------|
+| Script           | Purpose                                               |
+| ---------------- | ----------------------------------------------------- |
 | `npm run doctor` | Verify environment (Node version, dependencies, etc.) |
-| `npm run reset` | Delete all data from the SQLite database |
+| `npm run reset`  | Delete all data from the SQLite database              |
 
 ## Git Hooks
 

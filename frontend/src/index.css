@@ -1,9 +1,10 @@
 @import 'leaflet/dist/leaflet.css';
 
-:root[data-theme="apple"] {
-  --body-bg: radial-gradient(120% 80% at 70% 0%, rgba(255,255,255,0.18) 0%, transparent 55%),
-             radial-gradient(90% 70% at 10% 100%, rgba(80,110,150,0.55) 0%, transparent 60%),
-             linear-gradient(170deg, #6f8aa8 0%, #5a7591 35%, #4a627c 65%, #3c5066 100%);
+:root[data-theme='apple'] {
+  --body-bg:
+    radial-gradient(120% 80% at 70% 0%, rgba(255, 255, 255, 0.18) 0%, transparent 55%),
+    radial-gradient(90% 70% at 10% 100%, rgba(80, 110, 150, 0.55) 0%, transparent 60%),
+    linear-gradient(170deg, #6f8aa8 0%, #5a7591 35%, #4a627c 65%, #3c5066 100%);
   --card-bg: rgba(255, 255, 255, 0.08);
   --card-border: rgba(255, 255, 255, 0.15);
   --sidebar-bg: rgba(0, 0, 0, 0.2);
@@ -17,9 +18,9 @@
   --accent-color: #0ea5e9;
 }
 
-:root[data-theme="midnight"] {
-  --body-bg: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(6,182,212,0.08) 0%, transparent 60%),
-             #0a0a0f;
+:root[data-theme='midnight'] {
+  --body-bg:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(6, 182, 212, 0.08) 0%, transparent 60%), #0a0a0f;
   --card-bg: rgba(255, 255, 255, 0.04);
   --card-border: rgba(34, 211, 238, 0.2);
   --sidebar-bg: #0d0d12;
@@ -33,7 +34,7 @@
   --accent-color: #22d3ee;
 }
 
-:root[data-theme="sunrise"] {
+:root[data-theme='sunrise'] {
   --body-bg: linear-gradient(160deg, #ffdab3 0%, #ffb87a 30%, #ff8a65 60%, #e67350 100%);
   --card-bg: rgba(255, 255, 255, 0.85);
   --card-border: rgba(194, 112, 60, 0.2);
@@ -48,7 +49,7 @@
   --accent-color: #e65100;
 }
 
-:root[data-theme="arctic"] {
+:root[data-theme='arctic'] {
   --body-bg: linear-gradient(180deg, #f0f7ff 0%, #e8f1fa 50%, #fafcff 100%);
   --card-bg: #ffffff;
   --card-border: rgba(180, 210, 240, 0.5);
@@ -63,7 +64,7 @@
   --accent-color: #2563eb;
 }
 
-:root[data-theme="forest"] {
+:root[data-theme='forest'] {
   --body-bg: linear-gradient(170deg, #1a2e1a 0%, #1f3a1f 40%, #162b16 70%, #0f200f 100%);
   --card-bg: rgba(52, 211, 153, 0.06);
   --card-border: rgba(52, 211, 153, 0.2);
@@ -78,7 +79,7 @@
   --accent-color: #34d399;
 }
 
-:root[data-theme="terminal"] {
+:root[data-theme='terminal'] {
   --body-bg: #000000;
   --card-bg: rgba(0, 0, 0, 0.9);
   --card-border: rgba(51, 255, 51, 0.3);
@@ -93,7 +94,7 @@
   --accent-color: #33ff33;
 }
 
-:root[data-theme="pastel"] {
+:root[data-theme='pastel'] {
   --body-bg: linear-gradient(135deg, #f0e6ff 0%, #e8f4fd 40%, #fce4ec 70%, #f3e5f5 100%);
   --card-bg: rgba(255, 255, 255, 0.75);
   --card-border: rgba(186, 147, 210, 0.25);
@@ -108,7 +109,7 @@
   --accent-color: #9c27b0;
 }
 
-:root[data-theme="ocean"] {
+:root[data-theme='ocean'] {
   --body-bg: linear-gradient(160deg, #0f172a 0%, #0c2d48 35%, #0d4f6b 65%, #0d9488 100%);
   --card-bg: rgba(13, 148, 136, 0.12);
   --card-border: rgba(13, 148, 136, 0.25);
@@ -165,6 +166,6 @@ input:focus-visible {
 }
 
 /* Push Leaflet zoom controls below the close button in fullscreen map */
-[role="dialog"] .leaflet-top.leaflet-right {
+[role='dialog'] .leaflet-top.leaflet-right {
   top: 48px;
 }

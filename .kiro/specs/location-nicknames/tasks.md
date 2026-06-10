@@ -18,7 +18,7 @@ Add the ability for users to assign, edit, and clear custom nicknames for saved 
     - Add `updateNickname(id: number, nickname: string | null): Promise<LocationRecord | null>` function that updates the nickname column and returns the full record
     - _Requirements: 1.2, 1.3, 2.1_
 
-  - [ ]* 1.3 Write property tests for nickname storage and validation
+  - [ ]\* 1.3 Write property tests for nickname storage and validation
     - **Property 1: Nickname storage round-trip**
     - **Validates: Requirements 2.1**
     - **Property 2: Overlong nickname rejection**
@@ -39,7 +39,7 @@ Add the ability for users to assign, edit, and clear custom nicknames for saved 
     - On success, return updated location record with HTTP 200
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6_
 
-  - [ ]* 2.2 Write unit tests for PATCH endpoint
+  - [ ]\* 2.2 Write unit tests for PATCH endpoint
     - Test valid nickname returns 200 and updated record
     - Test empty string clears nickname to null
     - Test whitespace-only clears nickname to null
@@ -64,7 +64,7 @@ Add the ability for users to assign, edit, and clear custom nicknames for saved 
     - Resolution priority: trimmed nickname (if non-empty) → weather.area → coordinates formatted as `"{lat.toFixed(3)}, {lon.toFixed(3)}"`
     - _Requirements: 3.1, 3.2, 3.3, 4.1, 4.2, 4.3_
 
-  - [ ]* 4.3 Write property test for getDisplayName
+  - [ ]\* 4.3 Write property test for getDisplayName
     - **Property 5: Display name resolution priority**
     - **Validates: Requirements 3.1, 3.2, 3.3, 4.1, 4.2, 4.3**
 
@@ -97,7 +97,7 @@ Add the ability for users to assign, edit, and clear custom nicknames for saved 
     - Update the `filtered` useMemo in `frontend/src/components/Sidebar.tsx` to also match against `location.nickname` (case-insensitive substring match)
     - _Requirements: 7.1, 7.2, 7.3, 7.4_
 
-  - [ ]* 7.3 Write property test for search filter including nicknames
+  - [ ]\* 7.3 Write property test for search filter including nicknames
     - **Property 6: Search filter includes nickname matches**
     - **Validates: Requirements 7.1, 7.2, 7.3**
 

@@ -4,6 +4,7 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
@@ -21,7 +22,8 @@ const MAP_ZOOM = 11;
 const MAP_MIN_ZOOM = 10;
 const MAP_MAX_ZOOM = 18;
 const TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 function createMarkerIcon(isSelected: boolean): L.DivIcon {
   const size = isSelected ? 24 : 16;
@@ -197,7 +199,7 @@ export function MapCard() {
     [closeFullscreen],
   );
 
-  const renderMarkers = (enableScrollZoom: boolean) =>
+  const renderMarkers = (_enableScrollZoom: boolean) =>
     locations.map((location) => (
       <Marker
         key={location.id}
@@ -208,17 +210,13 @@ export function MapCard() {
       >
         <Popup>
           <div className="text-sm">
-            <div className="font-medium">
-              {getDisplayName(location)}
-            </div>
+            <div className="font-medium">{getDisplayName(location)}</div>
             <div>
               {location.weather.temperature_c != null
                 ? `${Math.round(location.weather.temperature_c)}°`
                 : '--'}
             </div>
-            <div className="text-gray-500">
-              {location.weather.condition ?? 'No data'}
-            </div>
+            <div className="text-gray-500">{location.weather.condition ?? 'No data'}</div>
           </div>
         </Popup>
       </Marker>
@@ -265,7 +263,11 @@ export function MapCard() {
             >
               <TileLayer url={TILE_URL} attribution={TILE_ATTRIBUTION} />
               <ZoomControl position="topright" />
-              <MapController isFullscreen={false} viewState={viewState} onViewChange={handleViewChange} />
+              <MapController
+                isFullscreen={false}
+                viewState={viewState}
+                onViewChange={handleViewChange}
+              />
               {renderMarkers(false)}
             </MapContainer>
             {!isLoading && locations.length === 0 && (
@@ -307,7 +309,11 @@ export function MapCard() {
             >
               <TileLayer url={TILE_URL} attribution={TILE_ATTRIBUTION} />
               <ZoomControl position="topright" />
-              <MapController isFullscreen={true} viewState={viewState} onViewChange={handleViewChange} />
+              <MapController
+                isFullscreen={true}
+                viewState={viewState}
+                onViewChange={handleViewChange}
+              />
               {renderMarkers(true)}
             </MapContainer>
             <button

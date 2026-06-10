@@ -39,10 +39,11 @@ index.html (blocking script sets data-theme before paint)
 Two rule sets define color tokens:
 
 ```css
-:root[data-theme="apple"] {
-  --body-bg: radial-gradient(120% 80% at 70% 0%, rgba(255,255,255,0.18) 0%, transparent 55%),
-             radial-gradient(90% 70% at 10% 100%, rgba(80,110,150,0.55) 0%, transparent 60%),
-             linear-gradient(170deg, #6f8aa8 0%, #5a7591 35%, #4a627c 65%, #3c5066 100%);
+:root[data-theme='apple'] {
+  --body-bg:
+    radial-gradient(120% 80% at 70% 0%, rgba(255, 255, 255, 0.18) 0%, transparent 55%),
+    radial-gradient(90% 70% at 10% 100%, rgba(80, 110, 150, 0.55) 0%, transparent 60%),
+    linear-gradient(170deg, #6f8aa8 0%, #5a7591 35%, #4a627c 65%, #3c5066 100%);
   --card-bg: rgba(255, 255, 255, 0.08);
   --card-border: rgba(255, 255, 255, 0.15);
   --sidebar-bg: rgba(0, 0, 0, 0.2);
@@ -56,9 +57,9 @@ Two rule sets define color tokens:
   --accent-color: #0ea5e9;
 }
 
-:root[data-theme="midnight"] {
-  --body-bg: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(6,182,212,0.08) 0%, transparent 60%),
-             #0a0a0f;
+:root[data-theme='midnight'] {
+  --body-bg:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(6, 182, 212, 0.08) 0%, transparent 60%), #0a0a0f;
   --card-bg: rgba(255, 255, 255, 0.04);
   --card-border: rgba(34, 211, 238, 0.2);
   --sidebar-bg: #0d0d12;
@@ -150,11 +151,13 @@ A synchronous inline script runs before React hydrates:
 
 ```html
 <script>
-  (function() {
+  (function () {
     var STORAGE_KEY = 'weather-theme';
     var VALID = ['apple', 'midnight'];
     var stored = null;
-    try { stored = localStorage.getItem(STORAGE_KEY); } catch(e) {}
+    try {
+      stored = localStorage.getItem(STORAGE_KEY);
+    } catch (e) {}
     var theme = VALID.indexOf(stored) !== -1 ? stored : 'apple';
     document.documentElement.setAttribute('data-theme', theme);
   })();
@@ -281,25 +284,25 @@ interface ThemeContextValue {
 
 ### CSS Custom Properties Contract
 
-| Variable | Purpose |
-|----------|---------|
-| `--body-bg` | Body background (gradient or solid) |
-| `--card-bg` | Main content card background |
-| `--card-border` | Main content card border |
-| `--sidebar-bg` | Sidebar panel background |
-| `--sidebar-card-bg` | Sidebar card default background |
-| `--sidebar-card-border` | Sidebar card default border |
-| `--sidebar-card-selected-bg` | Sidebar card selected background |
-| `--sidebar-card-selected-border` | Sidebar card selected border |
-| `--text-primary` | Primary readable text |
-| `--text-secondary` | Secondary/supporting text |
-| `--text-muted` | De-emphasized/hint text |
-| `--accent-color` | Interactive accent highlights |
+| Variable                         | Purpose                             |
+| -------------------------------- | ----------------------------------- |
+| `--body-bg`                      | Body background (gradient or solid) |
+| `--card-bg`                      | Main content card background        |
+| `--card-border`                  | Main content card border            |
+| `--sidebar-bg`                   | Sidebar panel background            |
+| `--sidebar-card-bg`              | Sidebar card default background     |
+| `--sidebar-card-border`          | Sidebar card default border         |
+| `--sidebar-card-selected-bg`     | Sidebar card selected background    |
+| `--sidebar-card-selected-border` | Sidebar card selected border        |
+| `--text-primary`                 | Primary readable text               |
+| `--text-secondary`               | Secondary/supporting text           |
+| `--text-muted`                   | De-emphasized/hint text             |
+| `--accent-color`                 | Interactive accent highlights       |
 
 ### localStorage API
 
-| Key | Value | Default |
-|-----|-------|---------|
+| Key             | Value                     | Default   |
+| --------------- | ------------------------- | --------- |
 | `weather-theme` | `"apple"` \| `"midnight"` | `"apple"` |
 
 ## Data Models
@@ -312,6 +315,7 @@ type Theme = (typeof VALID_THEMES)[number];
 ```
 
 The theme list is a compile-time constant. Adding a future theme requires only:
+
 1. Adding its identifier to `VALID_THEMES`
 2. Adding a `:root[data-theme="newtheme"]` rule in `index.css`
 3. Updating the blocking script's `VALID` array
@@ -319,26 +323,26 @@ The theme list is a compile-time constant. Adding a future theme requires only:
 
 ## Error Handling
 
-| Scenario | Handling |
-|----------|----------|
-| localStorage unavailable (private browsing) | Catch silently; default to "apple"; changes apply for session only |
-| Invalid/corrupted value in localStorage | `isValidTheme()` returns false; falls back to "apple" |
-| User calls `setTheme` with invalid identifier | Guard clause exits early; no state change |
-| DOM manipulation fails (SSR edge case) | `useEffect` only runs client-side; blocking script uses `try/catch` |
+| Scenario                                      | Handling                                                            |
+| --------------------------------------------- | ------------------------------------------------------------------- |
+| localStorage unavailable (private browsing)   | Catch silently; default to "apple"; changes apply for session only  |
+| Invalid/corrupted value in localStorage       | `isValidTheme()` returns false; falls back to "apple"               |
+| User calls `setTheme` with invalid identifier | Guard clause exits early; no state change                           |
+| DOM manipulation fails (SSR edge case)        | `useEffect` only runs client-side; blocking script uses `try/catch` |
 
 ## Component Refactoring Strategy
 
 Existing components reference hardcoded Tailwind opacity classes (`text-white/90`, `bg-white/[0.08]`, etc.). These will be refactored to use CSS variable references via Tailwind arbitrary value syntax:
 
-| Current | Refactored |
-|---------|-----------|
-| `bg-white/[0.08]` (cards) | `bg-[var(--card-bg)]` |
-| `border-white/15` (cards) | `border-[var(--card-border)]` |
-| `bg-black/20` (sidebar) | `bg-[var(--sidebar-bg)]` |
-| `text-white/90` | `text-[var(--text-primary)]` |
-| `text-white/70` | `text-[var(--text-secondary)]` |
-| `text-white/55`, `text-white/60` | `text-[var(--text-muted)]` |
-| `bg-white/[0.07]` (sidebar cards) | `bg-[var(--sidebar-card-bg)]` |
+| Current                           | Refactored                            |
+| --------------------------------- | ------------------------------------- |
+| `bg-white/[0.08]` (cards)         | `bg-[var(--card-bg)]`                 |
+| `border-white/15` (cards)         | `border-[var(--card-border)]`         |
+| `bg-black/20` (sidebar)           | `bg-[var(--sidebar-bg)]`              |
+| `text-white/90`                   | `text-[var(--text-primary)]`          |
+| `text-white/70`                   | `text-[var(--text-secondary)]`        |
+| `text-white/55`, `text-white/60`  | `text-[var(--text-muted)]`            |
+| `bg-white/[0.07]` (sidebar cards) | `bg-[var(--sidebar-card-bg)]`         |
 | `border-white/10` (sidebar cards) | `border-[var(--sidebar-card-border)]` |
 
 The body background in `index.css` switches from a hardcoded `background:` declaration to `background: var(--body-bg)`.
@@ -353,22 +357,22 @@ Non-color properties (border-radius, backdrop-blur, spacing, font-size) remain u
 
 ## Correctness Properties
 
-*A property is a characteristic or behavior that should hold true across all valid executions of a system — essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
+_A property is a characteristic or behavior that should hold true across all valid executions of a system — essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees._
 
 ### Property 1: Theme persistence round-trip
 
-*For any* valid theme identifier, storing it via `setTheme`, then reloading (constructing a new ThemeProvider instance), should result in the active theme equaling the originally stored identifier, and `document.documentElement.dataset.theme` reflecting that same value.
+_For any_ valid theme identifier, storing it via `setTheme`, then reloading (constructing a new ThemeProvider instance), should result in the active theme equaling the originally stored identifier, and `document.documentElement.dataset.theme` reflecting that same value.
 
 **Validates: Requirements 1.2, 1.4, 1.5, 6.4**
 
 ### Property 2: Invalid stored theme defaults to apple
 
-*For any* string value stored in localStorage under the theme key that is NOT a member of the valid themes list, the ThemeProvider should initialize with "apple" as the active theme and set `data-theme="apple"` on the root element.
+_For any_ string value stored in localStorage under the theme key that is NOT a member of the valid themes list, the ThemeProvider should initialize with "apple" as the active theme and set `data-theme="apple"` on the root element.
 
 **Validates: Requirements 1.3, 6.3**
 
 ### Property 3: Theme selection applies correct identifier
 
-*For any* theme in the available themes list, when that theme is selected through the ThemeSelector UI, the `setTheme` function should be invoked with exactly that theme's identifier, causing the root element's `data-theme` attribute and localStorage to both reflect the selected identifier.
+_For any_ theme in the available themes list, when that theme is selected through the ThemeSelector UI, the `setTheme` function should be invoked with exactly that theme's identifier, causing the root element's `data-theme` attribute and localStorage to both reflect the selected identifier.
 
 **Validates: Requirements 5.3, 6.4**

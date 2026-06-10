@@ -2,11 +2,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import type { Location, WeatherSnapshot } from '../types';
 
 // Mock store values
 const mockSelect = vi.fn();
 const defaultStoreValues = {
-  locations: [] as any[],
+  locations: [] as { id: number; latitude: number; longitude: number; nickname: string | null; created_at: string; weather: WeatherSnapshot }[],
   selectedId: null as number | null,
   isAdding: false,
   isLoading: false,
@@ -25,11 +26,13 @@ vi.mock('../state/store', () => ({
 }));
 
 vi.mock('react-leaflet', () => ({
-  MapContainer: ({ children, ...props }: any) => (
-    <div data-testid="map-container" data-style={JSON.stringify(props.style)}>{children}</div>
+  MapContainer: ({ children, ...props }: { children?: React.ReactNode; style?: object }) => (
+    <div data-testid="map-container" data-style={JSON.stringify(props.style)}>
+      {children}
+    </div>
   ),
-  TileLayer: (props: any) => <div data-testid="tile-layer" />,
-  Marker: ({ children, eventHandlers, position, icon, alt, ...props }: any) => (
+  TileLayer: () => <div data-testid="tile-layer" />,
+  Marker: ({ children, eventHandlers, position, icon, alt }: { children?: React.ReactNode; eventHandlers?: { click?: () => void }; position?: [number, number]; icon?: { options?: { iconSize?: number[] } }; alt?: string }) => (
     <div
       data-testid="marker"
       data-position={JSON.stringify(position)}
@@ -40,7 +43,7 @@ vi.mock('react-leaflet', () => ({
       {children}
     </div>
   ),
-  Popup: ({ children }: any) => <div data-testid="popup">{children}</div>,
+  Popup: ({ children }: { children?: React.ReactNode }) => <div data-testid="popup">{children}</div>,
   ZoomControl: () => <div data-testid="zoom-control" />,
   useMap: () => ({
     invalidateSize: vi.fn(),
@@ -62,13 +65,12 @@ vi.mock('leaflet', () => ({
         mergeOptions: vi.fn(),
       },
     },
-    divIcon: (opts: any) => ({ options: opts }),
+    divIcon: (opts: Record<string, unknown>) => ({ options: opts }),
   },
-  divIcon: (opts: any) => ({ options: opts }),
+  divIcon: (opts: Record<string, unknown>) => ({ options: opts }),
 }));
 
 import { MapCard } from './MapCard';
-import type { Location, WeatherSnapshot } from '../types';
 
 function makeWeather(overrides: Partial<WeatherSnapshot> = {}): WeatherSnapshot {
   return {

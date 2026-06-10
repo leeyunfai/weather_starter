@@ -1,0 +1,8 @@
+node_modules
+dist
+backend/weather.db
+backend/weather.db-shm
+backend/weather.db-wal
+backend/drizzle
+backend/logs
+frontend/dist

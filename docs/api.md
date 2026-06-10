@@ -2,16 +2,16 @@
 
 All routes prefixed with `/api`.
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/locations` | List all saved locations with weather |
-| POST | `/locations` | Create location (body: `{ latitude, longitude }`, auto-fetches weather) |
-| GET | `/locations/:id` | Get single location |
-| PATCH | `/locations/:id` | Update nickname (body: `{ nickname }`, empty string clears) |
-| DELETE | `/locations/:id` | Delete location |
-| POST | `/locations/:id/refresh` | Re-fetch weather data from provider |
-| POST | `/logs` | Log frontend interaction event |
-| GET | `/health` | Health check (no /api prefix) |
+| Method | Endpoint                 | Description                                                             |
+| ------ | ------------------------ | ----------------------------------------------------------------------- |
+| GET    | `/locations`             | List all saved locations with weather                                   |
+| POST   | `/locations`             | Create location (body: `{ latitude, longitude }`, auto-fetches weather) |
+| GET    | `/locations/:id`         | Get single location                                                     |
+| PATCH  | `/locations/:id`         | Update nickname (body: `{ nickname }`, empty string clears)             |
+| DELETE | `/locations/:id`         | Delete location                                                         |
+| POST   | `/locations/:id/refresh` | Re-fetch weather data from provider                                     |
+| POST   | `/logs`                  | Log frontend interaction event                                          |
+| GET    | `/health`                | Health check (no /api prefix)                                           |
 
 ## Nickname Validation (PATCH)
 

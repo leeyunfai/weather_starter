@@ -21,13 +21,16 @@ This skill provides reference documentation for the data.gov.sg weather APIs con
 ## Endpoints Used
 
 ### Two-Hour Forecast
+
 - **URL:** `GET /v2/real-time/api/two-hr-forecast`
 - **Returns:** Area-level weather forecasts (condition text per named area)
 - **Key fields:** `area_metadata[]` (name + lat/lng), `items[].forecasts[]` (area + forecast text)
 - **Used for:** Primary weather condition and area name resolution
 
 ### Real-Time Readings
+
 All follow the same response shape:
+
 - **Air Temperature:** `GET /v2/real-time/api/air-temperature`
 - **Relative Humidity:** `GET /v2/real-time/api/relative-humidity`
 - **Rainfall:** `GET /v2/real-time/api/rainfall`
@@ -37,26 +40,31 @@ All follow the same response shape:
 - **Resolution:** Nearest station to the user's coordinates
 
 ### UV Index
+
 - **URL:** `GET /v2/real-time/api/uv`
 - **Returns:** `data.records[].index[]` with hour and value
 - **Resolution:** Nationwide (single value)
 
 ### PSI (Air Quality)
+
 - **URL:** `GET /v2/real-time/api/psi`
 - **Returns:** Regional readings keyed by region name (north, south, east, west, central)
 - **Resolution:** Nearest region to coordinates
 
 ### PM2.5
+
 - **URL:** `GET /v2/real-time/api/pm25`
 - **Returns:** Same structure as PSI, regional readings
 - **Resolution:** Nearest region to coordinates
 
 ### 24-Hour Forecast
+
 - **URL:** `GET /v2/real-time/api/twenty-four-hr-forecast`
 - **Returns:** General temperature (low/high) + period-by-region forecasts
 - **Used for:** `forecast_low_c`, `forecast_high_c`, `forecast_periods[]`
 
 ### 4-Day Forecast
+
 - **URL:** `GET /v1/environment/4-day-weather-forecast` (legacy endpoint)
 - **Returns:** `items[].forecasts[]` with date, forecast text, temperature low/high
 - **Used for:** `daily_forecast[]` array
@@ -64,6 +72,7 @@ All follow the same response shape:
 ## Response Patterns
 
 All v2 endpoints return:
+
 ```json
 {
   "code": 0,

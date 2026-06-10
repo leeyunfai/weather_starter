@@ -186,18 +186,52 @@ export class SingaporeWeatherClient {
       ? this.snapshotFromPayload(forecastPayload, latitude, longitude)
       : this.emptyForecastSnapshot();
 
-    const [temperature, humidity, rainfall, windSpeed, windDirection, uv, airQuality, forecast24, forecast4Day] =
-      await Promise.all([
-        this.fetchNearestReading('air-temperature', latitude, longitude).catch(() => ({ value: null, timestamp: null })),
-        this.fetchNearestReading('relative-humidity', latitude, longitude).catch(() => ({ value: null, timestamp: null })),
-        this.fetchNearestReading('rainfall', latitude, longitude).catch(() => ({ value: null, timestamp: null })),
-        this.fetchNearestReading('wind-speed', latitude, longitude).catch(() => ({ value: null, timestamp: null })),
-        this.fetchNearestReading('wind-direction', latitude, longitude).catch(() => ({ value: null, timestamp: null })),
-        this.fetchUvIndex().catch(() => ({ value: null, timestamp: null })),
-        this.fetchAirQuality(latitude, longitude).catch(() => ({ psi: null, pm25: null, region: null, timestamp: null })),
-        this.fetchTwentyFourHourForecast(latitude, longitude).catch(() => ({ low: null, high: null, periods: [], timestamp: null })),
-        this.fetchFourDayForecast().catch(() => ({ days: [], timestamp: null })),
-      ]);
+    const [
+      temperature,
+      humidity,
+      rainfall,
+      windSpeed,
+      windDirection,
+      uv,
+      airQuality,
+      forecast24,
+      forecast4Day,
+    ] = await Promise.all([
+      this.fetchNearestReading('air-temperature', latitude, longitude).catch(() => ({
+        value: null,
+        timestamp: null,
+      })),
+      this.fetchNearestReading('relative-humidity', latitude, longitude).catch(() => ({
+        value: null,
+        timestamp: null,
+      })),
+      this.fetchNearestReading('rainfall', latitude, longitude).catch(() => ({
+        value: null,
+        timestamp: null,
+      })),
+      this.fetchNearestReading('wind-speed', latitude, longitude).catch(() => ({
+        value: null,
+        timestamp: null,
+      })),
+      this.fetchNearestReading('wind-direction', latitude, longitude).catch(() => ({
+        value: null,
+        timestamp: null,
+      })),
+      this.fetchUvIndex().catch(() => ({ value: null, timestamp: null })),
+      this.fetchAirQuality(latitude, longitude).catch(() => ({
+        psi: null,
+        pm25: null,
+        region: null,
+        timestamp: null,
+      })),
+      this.fetchTwentyFourHourForecast(latitude, longitude).catch(() => ({
+        low: null,
+        high: null,
+        periods: [],
+        timestamp: null,
+      })),
+      this.fetchFourDayForecast().catch(() => ({ days: [], timestamp: null })),
+    ]);
 
     base.temperature_c = temperature.value;
     base.humidity_percent = humidity.value;
@@ -228,7 +262,9 @@ export class SingaporeWeatherClient {
     ].filter((t): t is string => Boolean(t));
 
     if (timestamps.length > 0) {
-      base.observed_at = timestamps.sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
+      base.observed_at = timestamps.sort(
+        (a, b) => new Date(b).getTime() - new Date(a).getTime(),
+      )[0];
     }
 
     return base;
@@ -605,7 +641,6 @@ function valueForRegion(
   if (!values || !region) return null;
   return numberOrNull(values[region]);
 }
-
 
 function defaultRegions(): RegionMetadata[] {
   return [

@@ -117,21 +117,16 @@ export function StoreProvider({ children }: ProviderProps) {
     [load, selectedId],
   );
 
-  const updateNickname = useCallback(
-    async (id: number, nickname: string) => {
-      setError(null);
-      try {
-        const updated = await updateNicknameApi(id, nickname);
-        setLocations((prev) =>
-          prev.map((loc) => (loc.id === updated.id ? updated : loc)),
-        );
-      } catch (err) {
-        setError(err);
-        throw err;
-      }
-    },
-    [],
-  );
+  const updateNickname = useCallback(async (id: number, nickname: string) => {
+    setError(null);
+    try {
+      const updated = await updateNicknameApi(id, nickname);
+      setLocations((prev) => prev.map((loc) => (loc.id === updated.id ? updated : loc)));
+    } catch (err) {
+      setError(err);
+      throw err;
+    }
+  }, []);
 
   const value: StoreValue = {
     locations,

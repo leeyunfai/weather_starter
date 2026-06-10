@@ -21,20 +21,20 @@ Touch exactly 4 files:
 
 ## CSS Variables Contract
 
-| Variable | Purpose |
-|----------|---------|
-| `--body-bg` | Body background (gradient or solid) |
-| `--card-bg` | Main content card background |
-| `--card-border` | Main content card border |
-| `--sidebar-bg` | Sidebar panel background |
-| `--sidebar-card-bg` | Sidebar card default background |
-| `--sidebar-card-border` | Sidebar card default border |
-| `--sidebar-card-selected-bg` | Sidebar card selected background |
-| `--sidebar-card-selected-border` | Sidebar card selected border |
-| `--text-primary` | Primary readable text |
-| `--text-secondary` | Secondary/supporting text |
-| `--text-muted` | De-emphasized/hint text |
-| `--accent-color` | Interactive accent highlights |
+| Variable                         | Purpose                             |
+| -------------------------------- | ----------------------------------- |
+| `--body-bg`                      | Body background (gradient or solid) |
+| `--card-bg`                      | Main content card background        |
+| `--card-border`                  | Main content card border            |
+| `--sidebar-bg`                   | Sidebar panel background            |
+| `--sidebar-card-bg`              | Sidebar card default background     |
+| `--sidebar-card-border`          | Sidebar card default border         |
+| `--sidebar-card-selected-bg`     | Sidebar card selected background    |
+| `--sidebar-card-selected-border` | Sidebar card selected border        |
+| `--text-primary`                 | Primary readable text               |
+| `--text-secondary`               | Secondary/supporting text           |
+| `--text-muted`                   | De-emphasized/hint text             |
+| `--accent-color`                 | Interactive accent highlights       |
 
 ## Usage in Components
 

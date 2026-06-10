@@ -95,24 +95,24 @@ Add an interactive Leaflet-based map card to the weather dashboard that displays
     - Test: MapCard has `col-span-full` class
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7_
 
-  - [ ]* 5.2 Write property test: Marker count equals locations length
+  - [ ]\* 5.2 Write property test: Marker count equals locations length
     - **Property 1: Marker count equals locations length**
     - **Validates: Requirements 1.7, 1.8, 2.2, 2.8, 7.2, 7.8**
     - Generate arrays of 0–50 Location objects with `fast-check`, including null weather fields and Singapore boundary coordinates (lat 1.15–1.47, lng 103.60–104.05)
     - Assert: rendered marker count === locations array length
 
-  - [ ]* 5.3 Write property test: Selected icon assignment
+  - [ ]\* 5.3 Write property test: Selected icon assignment
     - **Property 2: Selected icon assignment**
     - **Validates: Requirements 2.6, 7.7**
     - For any non-empty locations array and any selectedId from those IDs, exactly one marker gets the selected icon; all others get unselected
     - If selectedId is null or not in array, all markers get unselected icon
 
-  - [ ]* 5.4 Write property test: Select callback correctness
+  - [ ]\* 5.4 Write property test: Select callback correctness
     - **Property 3: Select callback correctness**
     - **Validates: Requirements 2.3, 7.3**
     - For any Location rendered as a marker, clicking it calls `store.select` exactly once with that location's `id`
 
-  - [ ]* 5.5 Write property test: Location label derivation
+  - [ ]\* 5.5 Write property test: Location label derivation
     - **Property 4: Location label derivation**
     - **Validates: Requirements 2.4, 5.6**
     - For any Location, the derived label equals `weather.area` when non-null, or `"${lat.toFixed(3)}, ${lng.toFixed(3)}"` when area is null

@@ -29,11 +29,11 @@ Implement a client-side theme system using CSS custom properties, a React Contex
     - Export `ThemeProvider` and `useTheme`
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
 
-  - [ ]* 3.2 Write property test for theme persistence round-trip
+  - [ ]\* 3.2 Write property test for theme persistence round-trip
     - **Property 1: Theme persistence round-trip**
     - **Validates: Requirements 1.2, 1.4, 1.5, 6.4**
 
-  - [ ]* 3.3 Write property test for invalid stored theme defaults
+  - [ ]\* 3.3 Write property test for invalid stored theme defaults
     - **Property 2: Invalid stored theme defaults to apple**
     - **Validates: Requirements 1.3, 6.3**
 
@@ -47,7 +47,7 @@ Implement a client-side theme system using CSS custom properties, a React Contex
     - Visually indicate active theme in the dropdown
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7_
 
-  - [ ]* 4.2 Write property test for theme selection
+  - [ ]\* 4.2 Write property test for theme selection
     - **Property 3: Theme selection applies correct identifier**
     - **Validates: Requirements 5.3, 6.4**
 

@@ -26,6 +26,7 @@ flowchart TD
 ```
 
 **Data flow for nickname update:**
+
 1. User double-clicks the location name on SidebarCard → inline input appears
 2. User edits and presses Enter (or blurs the input)
 3. Store dispatches `updateNickname(id, nickname)` → calls `api.updateNickname(id, nickname)`
@@ -54,7 +55,7 @@ New function:
 export async function updateNickname(
   id: number,
   nickname: string | null,
-): Promise<LocationRecord | null>
+): Promise<LocationRecord | null>;
 ```
 
 - Sets `nickname` on the row identified by `id`
@@ -79,6 +80,7 @@ router.patch('/locations/:locationId', async (request, response, next) => {
 ```
 
 Validation rules:
+
 - Missing `nickname` field or non-string type → HTTP 422
 - Trimmed empty / whitespace-only → set to null (clearing the nickname)
 - Trimmed length > 50 → HTTP 422
@@ -93,7 +95,7 @@ export interface Location {
   id: number;
   latitude: number;
   longitude: number;
-  nickname: string | null;  // NEW
+  nickname: string | null; // NEW
   created_at: string;
   weather: WeatherSnapshot;
 }
@@ -120,6 +122,7 @@ updateNickname: (id: number, nickname: string) => Promise<void>;
 ```
 
 Implementation:
+
 1. Call `api.updateNickname(id, nickname)`
 2. On success, update the location in the `locations` array with the returned record
 3. On failure, throw (caller handles error display)
@@ -147,6 +150,7 @@ export function getDisplayName(location: {
 ```
 
 Resolution priority:
+
 1. Nickname (trimmed, if non-empty)
 2. API area name (from weather data)
 3. Formatted coordinates (3 decimal places)
@@ -165,6 +169,7 @@ const [saveError, setSaveError] = useState(false);
 ```
 
 UX behavior:
+
 - **Activate edit**: Double-click or pencil icon click on the location name
 - **Input pre-fill**: Current nickname if set, otherwise empty string
 - **Confirm**: Enter key or blur (onBlur) submits the value
@@ -176,12 +181,17 @@ UX behavior:
 #### MapCard Display
 
 Replace the current inline name resolution:
+
 ```typescript
 // Before
-{location.weather.area ?? `${location.latitude.toFixed(3)}, ${location.longitude.toFixed(3)}`}
+{
+  location.weather.area ?? `${location.latitude.toFixed(3)}, ${location.longitude.toFixed(3)}`;
+}
 
 // After
-{getDisplayName(location)}
+{
+  getDisplayName(location);
+}
 ```
 
 #### Sidebar Search Filter
@@ -205,9 +215,9 @@ const filtered = useMemo(() => {
 
 ### Database Schema
 
-| Column | Type | Nullable | Default | Constraint |
-|--------|------|----------|---------|------------|
-| nickname | TEXT | Yes | NULL | Max 50 chars (enforced at API level) |
+| Column   | Type | Nullable | Default | Constraint                           |
+| -------- | ---- | -------- | ------- | ------------------------------------ |
+| nickname | TEXT | Yes      | NULL    | Max 50 chars (enforced at API level) |
 
 ### API Response Shape
 
@@ -235,35 +245,36 @@ Returns the full updated location record (same shape as GET /locations/:id).
 
 ## Correctness Properties
 
-*A property is a characteristic or behavior that should hold true across all valid executions of a system — essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
+_A property is a characteristic or behavior that should hold true across all valid executions of a system — essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees._
 
 ### Property 1: Nickname storage round-trip
 
-*For any* valid nickname string (1–50 non-whitespace characters after trimming, possibly with leading/trailing whitespace), sending it via PATCH and then retrieving the location should return the trimmed value as the nickname.
+_For any_ valid nickname string (1–50 non-whitespace characters after trimming, possibly with leading/trailing whitespace), sending it via PATCH and then retrieving the location should return the trimmed value as the nickname.
 
 **Validates: Requirements 2.1**
 
 ### Property 2: Overlong nickname rejection
 
-*For any* string whose trimmed length exceeds 50 characters, the PATCH endpoint should respond with HTTP 422 and the location's nickname should remain unchanged.
+_For any_ string whose trimmed length exceeds 50 characters, the PATCH endpoint should respond with HTTP 422 and the location's nickname should remain unchanged.
 
 **Validates: Requirements 2.3**
 
 ### Property 3: Whitespace-only normalization
 
-*For any* string composed entirely of whitespace characters (spaces, tabs, newlines), the PATCH endpoint should set the nickname to null, and the response should contain `nickname: null`.
+_For any_ string composed entirely of whitespace characters (spaces, tabs, newlines), the PATCH endpoint should set the nickname to null, and the response should contain `nickname: null`.
 
 **Validates: Requirements 2.5**
 
 ### Property 4: Invalid type rejection
 
-*For any* value that is not a string type (number, boolean, array, object, null) provided as the `nickname` field, or when the `nickname` field is missing from the request body, the PATCH endpoint should respond with HTTP 422.
+_For any_ value that is not a string type (number, boolean, array, object, null) provided as the `nickname` field, or when the `nickname` field is missing from the request body, the PATCH endpoint should respond with HTTP 422.
 
 **Validates: Requirements 2.6**
 
 ### Property 5: Display name resolution priority
 
-*For any* location record, `getDisplayName` should return:
+_For any_ location record, `getDisplayName` should return:
+
 - The trimmed nickname if the nickname is non-null and contains at least one non-whitespace character
 - Otherwise the API area name if it is non-null and non-empty
 - Otherwise the coordinates formatted as `"{latitude.toFixed(3)}, {longitude.toFixed(3)}"`
@@ -272,22 +283,23 @@ Returns the full updated location record (same shape as GET /locations/:id).
 
 ### Property 6: Search filter includes nickname matches
 
-*For any* location with a non-null nickname and any substring of that nickname used as a search query, the location should appear in the filtered results regardless of whether the API area name matches.
+_For any_ location with a non-null nickname and any substring of that nickname used as a search query, the location should appear in the filtered results regardless of whether the API area name matches.
 
 **Validates: Requirements 7.1, 7.2, 7.3**
 
 ## Error Handling
 
-| Scenario | Backend Response | Frontend Behavior |
-|----------|-----------------|-------------------|
-| Nickname too long (>50 chars) | HTTP 422, error message | Display validation error, revert input |
-| Invalid nickname type | HTTP 422, error message | Should not occur (input always sends string) |
-| Location not found | HTTP 404, error message | Display error, revert |
-| Network failure | No response | Show error indicator for 3s, revert name |
-| Request timeout (>10s) | No response | Show error indicator for 3s, revert name |
-| Database write failure | HTTP 500 | Show error indicator for 3s, revert name |
+| Scenario                      | Backend Response        | Frontend Behavior                            |
+| ----------------------------- | ----------------------- | -------------------------------------------- |
+| Nickname too long (>50 chars) | HTTP 422, error message | Display validation error, revert input       |
+| Invalid nickname type         | HTTP 422, error message | Should not occur (input always sends string) |
+| Location not found            | HTTP 404, error message | Display error, revert                        |
+| Network failure               | No response             | Show error indicator for 3s, revert name     |
+| Request timeout (>10s)        | No response             | Show error indicator for 3s, revert name     |
+| Database write failure        | HTTP 500                | Show error indicator for 3s, revert name     |
 
 Frontend error handling strategy:
+
 - The inline edit component catches errors from the store's `updateNickname` action
 - On error: set `saveError = true`, display a red border or icon for 3 seconds, then revert the displayed name to the previous value
 - The loading state (`isSaving`) prevents double-submission
@@ -296,33 +308,33 @@ Frontend error handling strategy:
 
 ### Unit Tests (Example-based)
 
-| Test | Covers |
-|------|--------|
-| PATCH with valid nickname returns 200 and updated record | Req 2.1 |
-| PATCH with empty string clears nickname to null | Req 2.2 |
-| PATCH to non-existent location returns 404 | Req 2.4 |
-| Created location has nickname: null | Req 1.2 |
-| GET /locations includes nickname field | Req 1.3 |
-| SidebarCard edit: double-click opens input | Req 5.1 |
-| SidebarCard edit: Enter confirms | Req 5.2 |
-| SidebarCard edit: empty submit clears nickname | Req 5.3, 6.1 |
-| SidebarCard edit: Escape cancels | Req 5.4 |
-| SidebarCard edit: loading state while saving | Req 5.5 |
-| SidebarCard edit: error reverts | Req 5.6, 6.4 |
-| Empty search query shows all locations | Req 7.4 |
+| Test                                                     | Covers       |
+| -------------------------------------------------------- | ------------ |
+| PATCH with valid nickname returns 200 and updated record | Req 2.1      |
+| PATCH with empty string clears nickname to null          | Req 2.2      |
+| PATCH to non-existent location returns 404               | Req 2.4      |
+| Created location has nickname: null                      | Req 1.2      |
+| GET /locations includes nickname field                   | Req 1.3      |
+| SidebarCard edit: double-click opens input               | Req 5.1      |
+| SidebarCard edit: Enter confirms                         | Req 5.2      |
+| SidebarCard edit: empty submit clears nickname           | Req 5.3, 6.1 |
+| SidebarCard edit: Escape cancels                         | Req 5.4      |
+| SidebarCard edit: loading state while saving             | Req 5.5      |
+| SidebarCard edit: error reverts                          | Req 5.6, 6.4 |
+| Empty search query shows all locations                   | Req 7.4      |
 
 ### Property-Based Tests (fast-check)
 
 The project already has `fast-check` as a dev dependency. Each property test runs a minimum of 100 iterations.
 
-| Property Test | Design Property | Tag |
-|---------------|-----------------|-----|
-| Valid nicknames stored as trimmed | Property 1 | Feature: location-nicknames, Property 1: Nickname storage round-trip |
-| Overlong nicknames rejected | Property 2 | Feature: location-nicknames, Property 2: Overlong nickname rejection |
-| Whitespace-only normalized to null | Property 3 | Feature: location-nicknames, Property 3: Whitespace-only normalization |
-| Invalid types rejected | Property 4 | Feature: location-nicknames, Property 4: Invalid type rejection |
-| getDisplayName resolution priority | Property 5 | Feature: location-nicknames, Property 5: Display name resolution priority |
-| Search filter includes nickname matches | Property 6 | Feature: location-nicknames, Property 6: Search filter includes nickname matches |
+| Property Test                           | Design Property | Tag                                                                              |
+| --------------------------------------- | --------------- | -------------------------------------------------------------------------------- |
+| Valid nicknames stored as trimmed       | Property 1      | Feature: location-nicknames, Property 1: Nickname storage round-trip             |
+| Overlong nicknames rejected             | Property 2      | Feature: location-nicknames, Property 2: Overlong nickname rejection             |
+| Whitespace-only normalized to null      | Property 3      | Feature: location-nicknames, Property 3: Whitespace-only normalization           |
+| Invalid types rejected                  | Property 4      | Feature: location-nicknames, Property 4: Invalid type rejection                  |
+| getDisplayName resolution priority      | Property 5      | Feature: location-nicknames, Property 5: Display name resolution priority        |
+| Search filter includes nickname matches | Property 6      | Feature: location-nicknames, Property 6: Search filter includes nickname matches |
 
 ### Test Configuration
 

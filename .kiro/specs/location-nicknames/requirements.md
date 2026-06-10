@@ -93,4 +93,3 @@ This feature allows users to assign custom nicknames to their saved weather loca
 2. IF a location has a non-null nickname that matches the search query via case-insensitive substring, THEN THE Frontend SHALL include that location in the filtered results even if the API_Area_Name does not match
 3. IF a location has a null nickname, THEN THE Frontend SHALL match the search query against only the API_Area_Name for that location
 4. WHEN the search query is empty or contains only whitespace, THE Frontend SHALL display all locations without filtering
-

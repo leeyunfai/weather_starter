@@ -8,15 +8,15 @@ The MapCard component integrates into the existing TileGrid layout as a full-wid
 
 ### Key Design Decisions
 
-| Decision | Choice | Rationale |
-|----------|--------|-----------|
-| Map library | react-leaflet 4.2.1 + leaflet 1.9.4 | Already installed, zero API key, lightweight |
-| Tile provider | OpenStreetMap | Free, no registration, sufficient for pin display |
-| Marker style | Custom `L.divIcon` with CSS circles | Avoids broken default icon issue in Vite, enables selected/unselected styling |
-| Fullscreen approach | Inline conditional render with fixed overlay | Simpler than React portals, keeps map instance alive |
-| Icon fix | Explicit `L.Icon.Default` prototype override | Standard Vite/webpack fix for Leaflet's asset path issue |
-| Leaflet CSS import | `@import` in `index.css` | Co-locates all CSS imports, avoids JS bundle overhead |
-| Test strategy | Mock react-leaflet components | Leaflet requires DOM/canvas; mocking yields fast, deterministic tests |
+| Decision            | Choice                                       | Rationale                                                                     |
+| ------------------- | -------------------------------------------- | ----------------------------------------------------------------------------- |
+| Map library         | react-leaflet 4.2.1 + leaflet 1.9.4          | Already installed, zero API key, lightweight                                  |
+| Tile provider       | OpenStreetMap                                | Free, no registration, sufficient for pin display                             |
+| Marker style        | Custom `L.divIcon` with CSS circles          | Avoids broken default icon issue in Vite, enables selected/unselected styling |
+| Fullscreen approach | Inline conditional render with fixed overlay | Simpler than React portals, keeps map instance alive                          |
+| Icon fix            | Explicit `L.Icon.Default` prototype override | Standard Vite/webpack fix for Leaflet's asset path issue                      |
+| Leaflet CSS import  | `@import` in `index.css`                     | Co-locates all CSS imports, avoids JS bundle overhead                         |
+| Test strategy       | Mock react-leaflet components                | Leaflet requires DOM/canvas; mocking yields fast, deterministic tests         |
 
 ## Architecture
 
@@ -83,10 +83,12 @@ export function MapCard(): JSX.Element;
 ```
 
 **Internal State:**
+
 - `isFullscreen: boolean` — controls overlay visibility
 - `expandButtonRef: React.RefObject<HTMLButtonElement>` — for focus return
 
 **Hooks Used:**
+
 - `useStore()` — access locations, selectedId, isLoading, select
 - `useState` — isFullscreen toggle
 - `useEffect` — Escape key listener, focus management
@@ -107,6 +109,7 @@ function MapController({ isFullscreen, scrollWheelZoom }: MapControllerProps): n
 ```
 
 **Responsibilities:**
+
 - Call `map.invalidateSize()` after a 250ms delay when `isFullscreen` changes to true
 - Toggle `scrollWheelZoom` and `doubleClickZoom` on the map instance based on fullscreen state
 
@@ -117,6 +120,7 @@ function createMarkerIcon(isSelected: boolean): L.DivIcon;
 ```
 
 Returns a `L.divIcon` with:
+
 - Selected: 24×24px blue (#3b82f6) circle, slight box-shadow
 - Unselected: 16×16px gray (#6b7280) circle
 
@@ -204,10 +208,10 @@ interface WeatherSnapshot {
 // Popup display data derived from Location
 interface MarkerDisplayData {
   id: number;
-  position: [number, number];  // [lat, lng]
-  label: string;               // area or "lat, lng"
-  temperature: string;         // "25°" or "--"
-  condition: string;           // condition or "No data"
+  position: [number, number]; // [lat, lng]
+  label: string; // area or "lat, lng"
+  temperature: string; // "25°" or "--"
+  condition: string; // condition or "No data"
   isSelected: boolean;
 }
 ```
@@ -221,36 +225,35 @@ const MAP_MIN_ZOOM = 10;
 const MAP_MAX_ZOOM = 18;
 const INLINE_HEIGHT = '280px';
 const TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const TILE_ATTRIBUTION = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const TILE_ATTRIBUTION =
+  '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 ```
-
-
 
 ## Correctness Properties
 
-*A property is a characteristic or behavior that should hold true across all valid executions of a system — essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees.*
+_A property is a characteristic or behavior that should hold true across all valid executions of a system — essentially, a formal statement about what the system should do. Properties serve as the bridge between human-readable specifications and machine-verifiable correctness guarantees._
 
 ### Property 1: Marker count equals locations length
 
-*For any* array of 0 to 50 Location objects (including locations with null weather fields and coordinates at Singapore boundary edges latitude 1.15–1.47, longitude 103.60–104.05), the number of rendered marker elements SHALL equal the length of the locations array.
+_For any_ array of 0 to 50 Location objects (including locations with null weather fields and coordinates at Singapore boundary edges latitude 1.15–1.47, longitude 103.60–104.05), the number of rendered marker elements SHALL equal the length of the locations array.
 
 **Validates: Requirements 1.7, 1.8, 2.2, 2.8, 7.2, 7.8**
 
 ### Property 2: Selected icon assignment
 
-*For any* non-empty array of Location objects and any `selectedId` drawn from those locations' IDs, exactly one marker SHALL receive the selected icon (blue, 24×24), and all other markers SHALL receive the unselected icon (gray, 16×16). If `selectedId` is null or does not match any location ID, all markers SHALL receive the unselected icon.
+_For any_ non-empty array of Location objects and any `selectedId` drawn from those locations' IDs, exactly one marker SHALL receive the selected icon (blue, 24×24), and all other markers SHALL receive the unselected icon (gray, 16×16). If `selectedId` is null or does not match any location ID, all markers SHALL receive the unselected icon.
 
 **Validates: Requirements 2.6, 7.7**
 
 ### Property 3: Select callback correctness
 
-*For any* Location object rendered as a marker, when that marker's click handler is invoked, the store's `select` function SHALL be called exactly once with that location's `id` value.
+_For any_ Location object rendered as a marker, when that marker's click handler is invoked, the store's `select` function SHALL be called exactly once with that location's `id` value.
 
 **Validates: Requirements 2.3, 7.3**
 
 ### Property 4: Location label derivation
 
-*For any* Location object, the derived display label SHALL equal `location.weather.area` when area is a non-null string, or `"${latitude.toFixed(3)}, ${longitude.toFixed(3)}"` when area is null. This label is used both as the popup's first line and the marker's `alt` attribute.
+_For any_ Location object, the derived display label SHALL equal `location.weather.area` when area is a non-null string, or `"${latitude.toFixed(3)}, ${longitude.toFixed(3)}"` when area is null. This label is used both as the popup's first line and the marker's `alt` attribute.
 
 **Validates: Requirements 2.4, 5.6**
 
@@ -271,6 +274,7 @@ When `isLoading` is true and `locations` is empty, the map container is replaced
 ### Null Weather Fields
 
 All weather fields in `WeatherSnapshot` are nullable. The popup formatting handles nulls explicitly:
+
 - `area`: falls back to formatted coordinates
 - `temperature_c`: falls back to `"--"`
 - `condition`: falls back to `"No data"`
@@ -291,6 +295,7 @@ The existing vitest config (`vitest.config.ts`) only targets backend tests. Fron
 3. **Create** a frontend vitest config or extend the root config with a workspace configuration
 
 The test file `MapCard.test.tsx` will use a file-level vitest comment directive:
+
 ```typescript
 // @vitest-environment jsdom
 ```
@@ -315,21 +320,21 @@ The store is mocked via a test wrapper that provides controlled values.
 
 ### Unit Tests (Example-Based)
 
-| Test Case | Validates |
-|-----------|-----------|
-| Renders with correct aria attributes | Req 5.1, 5.7 |
-| Expand button opens fullscreen overlay | Req 3.3 |
-| Close button closes overlay | Req 3.7 |
-| Escape key closes overlay | Req 3.8 |
-| Backdrop click closes overlay | Req 3.9 |
-| Focus moves to close button on open | Req 3.12 |
-| Focus returns to expand button on close | Req 3.12, 5.5 |
-| Loading state shows placeholder text | Req 6.1 |
-| Empty state shows message overlay | Req 6.2 |
-| MapContainer has correct inline dimensions | Req 1.4 |
-| MapContainer has col-span-full class | Req 1.3 |
-| Scroll-wheel zoom disabled in inline mode | Req 4.5 |
-| Scroll-wheel zoom enabled in fullscreen | Req 4.6 |
+| Test Case                                  | Validates     |
+| ------------------------------------------ | ------------- |
+| Renders with correct aria attributes       | Req 5.1, 5.7  |
+| Expand button opens fullscreen overlay     | Req 3.3       |
+| Close button closes overlay                | Req 3.7       |
+| Escape key closes overlay                  | Req 3.8       |
+| Backdrop click closes overlay              | Req 3.9       |
+| Focus moves to close button on open        | Req 3.12      |
+| Focus returns to expand button on close    | Req 3.12, 5.5 |
+| Loading state shows placeholder text       | Req 6.1       |
+| Empty state shows message overlay          | Req 6.2       |
+| MapContainer has correct inline dimensions | Req 1.4       |
+| MapContainer has col-span-full class       | Req 1.3       |
+| Scroll-wheel zoom disabled in inline mode  | Req 4.5       |
+| Scroll-wheel zoom enabled in fullscreen    | Req 4.6       |
 
 ### Property-Based Tests
 
@@ -337,12 +342,12 @@ The store is mocked via a test wrapper that provides controlled values.
 
 Each property test runs a minimum of **100 iterations** with generated inputs.
 
-| Property Test | Tag | Min Iterations |
-|---------------|-----|----------------|
-| Marker count invariant | Feature: interactive-map, Property 1: Marker count equals locations length | 100 |
-| Icon selection invariant | Feature: interactive-map, Property 2: Selected icon assignment | 100 |
-| Select callback correctness | Feature: interactive-map, Property 3: Select callback correctness | 100 |
-| Location label derivation | Feature: interactive-map, Property 4: Location label derivation | 100 |
+| Property Test               | Tag                                                                        | Min Iterations |
+| --------------------------- | -------------------------------------------------------------------------- | -------------- |
+| Marker count invariant      | Feature: interactive-map, Property 1: Marker count equals locations length | 100            |
+| Icon selection invariant    | Feature: interactive-map, Property 2: Selected icon assignment             | 100            |
+| Select callback correctness | Feature: interactive-map, Property 3: Select callback correctness          | 100            |
+| Location label derivation   | Feature: interactive-map, Property 4: Location label derivation            | 100            |
 
 **Generator Strategy:**
 
@@ -351,7 +356,7 @@ Each property test runs a minimum of **100 iterations** with generated inputs.
 const locationArb = fc.record({
   id: fc.integer({ min: 1, max: 10000 }),
   latitude: fc.double({ min: 1.15, max: 1.47, noNaN: true }),
-  longitude: fc.double({ min: 103.60, max: 104.05, noNaN: true }),
+  longitude: fc.double({ min: 103.6, max: 104.05, noNaN: true }),
   created_at: fc.constant('2024-01-01T00:00:00Z'),
   weather: fc.record({
     area: fc.oneof(fc.string({ minLength: 1, maxLength: 30 }), fc.constant(null)),

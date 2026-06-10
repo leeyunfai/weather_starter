@@ -2,7 +2,16 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 import type { ReactNode } from 'react';
 
 const STORAGE_KEY = 'weather-theme';
-const VALID_THEMES = ['apple', 'midnight', 'sunrise', 'arctic', 'forest', 'terminal', 'pastel', 'ocean'] as const;
+const VALID_THEMES = [
+  'apple',
+  'midnight',
+  'sunrise',
+  'arctic',
+  'forest',
+  'terminal',
+  'pastel',
+  'ocean',
+] as const;
 type Theme = (typeof VALID_THEMES)[number];
 
 interface ThemeContextValue {

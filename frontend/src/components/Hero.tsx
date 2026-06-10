@@ -54,7 +54,9 @@ export function Hero() {
           <div className="mt-1 text-sm text-[var(--text-secondary)] tabular-nums">
             H:{high} L:{low}
           </div>
-          {observed && <div className="mt-3 text-xs text-[var(--text-muted)]">Updated {observed}</div>}
+          {observed && (
+            <div className="mt-3 text-xs text-[var(--text-muted)]">Updated {observed}</div>
+          )}
         </header>
 
         {validPeriod && (
